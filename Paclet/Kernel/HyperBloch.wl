@@ -14,13 +14,13 @@ HCSupercellModelGraph::usage = "HCSupercellModelGraph[assoc] represents a superc
 HBDisclinationModelGraph::usage = "HBDisclinationModelGraph[assoc] represents a model graph with disclinations with its properties defined by the Association assoc";
 HBDisclinationSupercellModelGraph::usage = "HBDisclinationSupercellModelGraph[assoc] represents a supercell model graph with disclinations with its properties defined by the Association assoc";
 
-HCQuotientSequencesAdjMat::usage = "HCQuotientSequencesAdjMat[assoc] represents an adjacency matrix specifying normal subgroup relations of translation groups with its properties defined by the Association assoc";
+HCQuotientSequencesStructure::usage = "HCQuotientSequencesStructure[assoc] represents a quotient sequences structure adjacency matrix specifying normal subgroup relations of translation groups with its properties defined by the Association assoc";
 
 
 ImportCellGraphString::usage = "ImportCellGraphString[\"string\"] imports a cell graph from a string and returns an HCCellGraph";
 ImportModelGraphString::usage = "ImportModelGraphString[\"string\"] imports a model graph from a string and returns an HCModelGraph";
 ImportSupercellModelGraphString::usage = "ImportSupercellModelGraphString[\"string\"] imports a supercell model graph from a string and returns an HCSupercellModelGraph";
-ImportQuotientSequencesAdjMatString::usage = "ImportQuotientSequencesAdjMatString[\"string\"] import an adjacency matrix specifying normal subgroup relations of translation groups from a string and returns a HCQuotientSequencesAdjMat";
+ImportQuotientSequencesStructureString::usage = "ImportQuotientSequencesStructureString[\"string\"] import a quotient sequences structure adjacency matrix specifying normal subgroup relations of translation groups from a string and returns a HCQuotientSequencesStructure";
 
 HCExampleData::usage = "HCExampleData[\"name\"] imports and returns the specified HCC/HCM/HCS/HCQS example file from \"PatrickMLenggenhager/HyperBloch/ExampleData/\".";
 
@@ -50,7 +50,7 @@ ShowCellBoundary::usage = "ShowCellBoundary[cgraph] shows the boundary and bound
 
 VisualizeCellGraph::usage = "VisualizeCellGraph[cgraph] visualizes the cell graph cgraph with head HCCellGraph in the Poincar\[EAcute] disk with the Schwarz triangles in the background";
 VisualizeModelGraph::usage = "VisualizeModelGraph[mgraph] visualizes the (supercell) model graph mgraph with head HCModelGraph (HCSupercellModelGraph) in the Poincar\[EAcute] disk with the Schwarz triangles in the background";
-VisualizeQuotientSequences::usage = "VisualizeQuotientSequences[qsAdjMat] visualizes the adjacency matrix qsAdjMat with head HCAdjacencyMatrix as a tree graph as a LayeredDigraphEmbedding";
+VisualizeQuotientSequences::usage = "VisualizeQuotientSequences[qsStructure] visualizes the quotient sequences structure adjacency matrix in qsStructure with head HCAdjacencyMatrix as a tree graph as a LayeredDigraphEmbedding";
 
 AbelianBlochHamiltonianExpression::usage = "AbelianBlochHamiltonianExpression[mgraph, norb, onsite, hoppings, k] constructs the Abelian Bloch Hamiltonian \[ScriptCapitalH](k) of the HCModelGraph or HCSupercellModelGraph mgraph with the number of orbitals at each site specified by norb, the onsite term by onsite, and the hopping along an edge by hoppings in terms of momenta k[i]";
 AbelianBlochHamiltonian::usage = "AbelianBlochHamiltonian[mgraph, norb, onsite, hoppings] returns the Abelian Bloch Hamiltonian \[ScriptCapitalH](k) of the HCModelGraph or HCSupercellModelGraph mgraph with the number of orbitals at each site specified by norb, the onsite term by onsite, and the hopping along an edge by hoppings as a function k :> \[ScriptCapitalH](k)";
@@ -175,7 +175,7 @@ HCSupercellModelGraph[scmgraph_][key_] := scmgraph[key]
 HBDisclinationModelGraph[mgraph_][key_] := mgraph[key]
 HBDisclinationSupercellModelGraph[scmgraph_][key_] := scmgraph[key]
 
-HCQuotientSequencesAdjMat[qsAdjMat_][key_] := qsAdjMat[key]
+HCQuotientSequencesStructure[qsStructure_][key_] := qsStructure[key]
 
 
 (* ::Subsection::Closed:: *)
@@ -492,14 +492,14 @@ ImportSupercellModelGraphString[str_]:=Module[{
 
 
 (* ::Subsection::Closed:: *)
-(*Import of normal subgroup adjacency matrices:*)
+(*Import of quotient sequences structure adjacency matrices:*)
 
 
-Options[ImportQuotientSequencesAdjMatString] = {	
+Options[ImportQuotientSequencesStructureString] = {	
 	ToDense -> False
 };
 
-ImportQuotientSequencesAdjMatString[str_, opts:OptionsPattern[{ImportQuotientSequencesAdjMatString}]]:=Module[
+ImportQuotientSequencesStructureString[str_, opts:OptionsPattern[{ImportQuotientSequencesStructureString}]]:=Module[
 	{version, tg, bg, tgQuotientNames, mspLst, sparse, adjMat, genusLst, dim},
 	 
 	If[StringStartsQ[str, "HyperCells"],    
@@ -523,7 +523,7 @@ ImportQuotientSequencesAdjMatString[str_, opts:OptionsPattern[{ImportQuotientSeq
 	dim = Length[tgQuotientNames];
 	If[sparse, adjMat = SparseArray[#[[1]] -> #[[2]]&/@adjMat, {dim, dim}]; If[OptionValue[ToDense], adjMat = Normal@adjMat]];
 
-	HCQuotientSequencesAdjMat[<|
+	HCQuotientSequencesStructure[<|
 	 "TriangleGroup" -> tg,
 	 "BoundByGenus" -> bg,
 	 "TGQuotientNames" -> tgQuotientNames,
@@ -544,7 +544,7 @@ HCExampleData[filename_] := Module[{
 		"hcc", ImportCellGraphString[content],
 		"hcm", ImportModelGraphString[content],
 		"hcs", ImportSupercellModelGraphString[content],
-		"hcqs", ImportQuotientSequencesAdjMatString[content]
+		"hcqs", ImportQuotientSequencesStructureString[content]
 	]
 ]
 
@@ -1815,7 +1815,7 @@ Options[VisualizeQuotientSequences] = {
 	VertexLabelFunction -> (""&)
 };
 
-VisualizeQuotientSequences[qsAdjMat_HCQuotientSequencesAdjMat, opts:OptionsPattern[{VisualizeQuotientSequences, Graph, AdjacencyGraph, Subgraph, HighlightGraph, Framed, Style, Graphics, Rectangle}]]:=Module[
+VisualizeQuotientSequences[qsStructure_HCQuotientSequencesStructure, opts:OptionsPattern[{VisualizeQuotientSequences, Graph, AdjacencyGraph, Subgraph, HighlightGraph, Framed, Style, Graphics, Rectangle}]]:=Module[
 	{version, tg, bg, tgQuotientNames,  mspLst, genusLst, vertexLabels, Mat, NNMat, frame, rawGraph,
 	 vertexLayerPosition, distinctGenera, highlights, distL, FullTreeGraph, SubTreeGraph, Vlabel, Vplace,
 	 keptVerticesIdx, keptVertices, keptVerticesLayers, keptVerticesLabels, keptVerticesHighlights, keptEdges, 
@@ -1825,14 +1825,14 @@ VisualizeQuotientSequences[qsAdjMat_HCQuotientSequencesAdjMat, opts:OptionsPatte
 	(* ------------------ *)
 	
 	(* infos *)
-	tg = qsAdjMat["TriangleGroup"]; (* triangle group signature *) 
-	bg = qsAdjMat["BoundByGenus"]; (* boundByGenus *) 
-	tgQuotientNames = qsAdjMat["TGQuotientNames"];
+	tg = qsStructure["TriangleGroup"]; (* triangle group signature *) 
+	bg = qsStructure["BoundByGenus"]; (* boundByGenus *) 
+	tgQuotientNames = qsStructure["TGQuotientNames"];
 	genusLst = tgQuotientNames[[;;,1]];
-	mspLst = qsAdjMat["MirrorSymmetries"];
+	mspLst = qsStructure["MirrorSymmetries"];
 	
 	(* adjacency matrix *)
-	Mat = qsAdjMat["AdjacencyMatrix"];
+	Mat = qsStructure["AdjacencyMatrix"];
 	NNMat = Mat - Sign[MatrixPower[Mat, 2]];
 
 	(* ---------------------------------- *)

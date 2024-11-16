@@ -731,16 +731,16 @@ Cell[BoxData[
 Cell[BoxData[
  InterpretationBox[
   TagBox[
-   TemplateBox[{"\"HCQuotientSequencesAdjMat.nb\"", 
+   TemplateBox[{"\"HCQuotientSequencesStructure.nb\"", 
      FileNameJoin[{
        NotebookDirectory[], "Documentation", "English", "ReferencePages", 
-       "Symbols", "HCQuotientSequencesAdjMat.nb"}]},
+       "Symbols", "HCQuotientSequencesStructure.nb"}]},
     "FileManagerFileOpenerTemplate"],
    Annotation[#, 
     DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[4]]& ],
   FileNameJoin[{
     NotebookDirectory[], "Documentation", "English", "ReferencePages", 
-    "Symbols", "HCQuotientSequencesAdjMat.nb"}],
+    "Symbols", "HCQuotientSequencesStructure.nb"}],
   BoxID -> "FileTreePath",
   BaseStyle->{"Text"}]], "FileManagerFile",
  CellMargins->{{92 + Inherited, Inherited}, {Inherited, Inherited}},
@@ -831,16 +831,16 @@ Cell[BoxData[
 Cell[BoxData[
  InterpretationBox[
   TagBox[
-   TemplateBox[{"\"ImportQuotientSequencesAdjMatString.nb\"", 
+   TemplateBox[{"\"ImportQuotientSequencesStructureString.nb\"", 
      FileNameJoin[{
        NotebookDirectory[], "Documentation", "English", "ReferencePages", 
-       "Symbols", "ImportQuotientSequencesAdjMatString.nb"}]},
+       "Symbols", "ImportQuotientSequencesStructureString.nb"}]},
     "FileManagerFileOpenerTemplate"],
    Annotation[#, 
     DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[4]]& ],
   FileNameJoin[{
     NotebookDirectory[], "Documentation", "English", "ReferencePages", 
-    "Symbols", "ImportQuotientSequencesAdjMatString.nb"}],
+    "Symbols", "ImportQuotientSequencesStructureString.nb"}],
   BoxID -> "FileTreePath",
   BaseStyle->{"Text"}]], "FileManagerFile",
  CellMargins->{{92 + Inherited, Inherited}, {Inherited, Inherited}},
@@ -1850,16 +1850,16 @@ Cell[BoxData[
 Cell[BoxData[
  InterpretationBox[
   TagBox[
-   TemplateBox[{"\"(2,4,6)-adjMat-BBG_102_sparse.hcqs\"", 
+   TemplateBox[{"\"(2,4,6)-QSS-BBG_102_sparse.hcqs\"", 
      FileNameJoin[{
        NotebookDirectory[], "Resources", "ExampleData", 
-       "(2,4,6)-adjMat-BBG_102_sparse.hcqs"}]},
+       "(2,4,6)-QSS-BBG_102_sparse.hcqs"}]},
     "FileManagerFileOpenerTemplate"],
    Annotation[#, 
     DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[2]]& ],
   FileNameJoin[{
     NotebookDirectory[], "Resources", "ExampleData", 
-    "(2,4,6)-adjMat-BBG_102_sparse.hcqs"}],
+    "(2,4,6)-QSS-BBG_102_sparse.hcqs"}],
   BoxID -> "FileTreePath",
   BaseStyle->{"Text"}]], "FileManagerFile",
  CellMargins->{{46 + Inherited, Inherited}, {Inherited, Inherited}},
@@ -1875,16 +1875,16 @@ Cell[BoxData[
 Cell[BoxData[
  InterpretationBox[
   TagBox[
-   TemplateBox[{"\"(2,4,6)-adjMat-BBG_35_sparse.hcqs\"", 
+   TemplateBox[{"\"(2,4,6)-QSS-BBG_35_sparse.hcqs\"", 
      FileNameJoin[{
        NotebookDirectory[], "Resources", "ExampleData", 
-       "(2,4,6)-adjMat-BBG_35_sparse.hcqs"}]},
+       "(2,4,6)-QSS-BBG_35_sparse.hcqs"}]},
     "FileManagerFileOpenerTemplate"],
    Annotation[#, 
     DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[2]]& ],
   FileNameJoin[{
     NotebookDirectory[], "Resources", "ExampleData", 
-    "(2,4,6)-adjMat-BBG_35_sparse.hcqs"}],
+    "(2,4,6)-QSS-BBG_35_sparse.hcqs"}],
   BoxID -> "FileTreePath",
   BaseStyle->{"Text"}]], "FileManagerFile",
  CellMargins->{{46 + Inherited, Inherited}, {Inherited, Inherited}},
@@ -10561,6 +10561,7 @@ with ",
                 False], 
                MouseAppearanceTag["LinkHand"]], ShowStringCharacters -> True, 
               FontFamily -> "Source Sans Pro"]]], 
+           
            " in order to access the paclet's functionality. If your paclet is \
 not meant to be loaded via a context, this section can be left blank. If \
 specified, the primary context will also be displayed on the main web page \
@@ -11844,7 +11845,6 @@ False]]\\)\"\>", {-0.8408964152563142, 0.3483106997496378}], {}}}}, {}}, {{
       {RGBColor[1, 0, 0], 
        {Arrowheads[{{0.015, 0.8, {
             GraphicsBox[
-             
              FilledCurveBox[{{{1, 4, 3}, {1, 3, 3}, {1, 3, 3}, {1, 3, 
               3}}}, {{{0., 0.}, {0., 
               0.}, {-0.42233177292624635`, -0.2761782454396067}, {-1., \
@@ -14887,6 +14887,7 @@ the following:\n\[FilledSmallSquare] Executes Shell or RUN commands\n\
                     ContentPadding -> False], 
                     MouseAppearanceTag["LinkHand"]], ShowStringCharacters -> 
                     True, FontFamily -> "Source Sans Pro"]]], 
+                    
                     "\n\[FilledSmallSquare] Interacts with external libraries\
 \n\[FilledSmallSquare] Reads or writes to streams or sockets\n\
 \[FilledSmallSquare] Launches parallel kernels, subkernels or GPUs"}], 

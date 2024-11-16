@@ -33,19 +33,19 @@ Cell[TextData[{
     BaseStyle->"Link",
     ButtonData->
      "paclet:PatrickMLenggenhager/HyperBloch/ref/VisualizeQuotientSequences"],
-    "[", "qsAdjMat", "]"}]], "InlineFormula",ExpressionUUID->
+    "[", "qsStructure", "]"}]], "InlineFormula",ExpressionUUID->
   "e77445f5-c166-694f-ab94-4c66283117f0"],
  "\[LineSeparator]visualizes a normal subgroup tree graph from a quotient \
-sequences adjacency matrix ",
+sequences structure adjacency matrix ",
  Cell[BoxData[
-  StyleBox["qsAdjMat", "TI"]], "InlineFormula",ExpressionUUID->
+  StyleBox["qsStructure", "TI"]], "InlineFormula",ExpressionUUID->
   "572e12e3-a5c3-44c7-9fcf-a5809879c434"],
  " with head ",
  Cell[BoxData[
-  ButtonBox["HCQuotientSequencesAdjMat",
+  ButtonBox["HCQuotientSequencesStructure",
    BaseStyle->"Link",
    ButtonData->
-    "paclet:PatrickMLenggenhager/HyperBloch/ref/HCQuotientSequencesAdjMat"]], 
+    "paclet:PatrickMLenggenhager/HyperBloch/ref/HCQuotientSequencesStructure"]], 
   "InlineFormula",ExpressionUUID->"d7df10db-a7e5-4076-b773-cf0054e24d35"]
 }], "Usage",
  CellChangeTimes->{{3.905927761987358*^9, 3.905927775647098*^9}, {
@@ -315,10 +315,10 @@ Cell[TextData[{
 
 Cell[TextData[{
  Cell[BoxData[
-  ButtonBox["HCQuotientSequencesAdjMat",
+  ButtonBox["HCQuotientSequencesStructure",
    BaseStyle->"Link",
    ButtonData->
-    "paclet:PatrickMLenggenhager/HyperBloch/ref/HCQuotientSequencesAdjMat"]], 
+    "paclet:PatrickMLenggenhager/HyperBloch/ref/HCQuotientSequencesStructure"]], 
   "InlineSeeAlsoFunction",
   TaggingRules->{"PageType" -> "Function"},ExpressionUUID->
   "3ca3ebcf-a7c0-447c-9955-340f42806e92"],
@@ -456,12 +456,12 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}]}], "]"}]}], "Input",
  CellChangeTimes->{{3.905928069639407*^9, 3.905928072986896*^9}, {
    3.9059281084294825`*^9, 3.90592816767716*^9}, {3.9059313081073523`*^9, 
@@ -2911,12 +2911,12 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", 
    RowBox[{"EdgeArrowPosition", "\[Rule]", "0.9"}]}], "]"}]}], "Input",
  CellChangeTimes->{{3.9380908882553406`*^9, 3.9380909061129017`*^9}, {
@@ -6867,12 +6867,12 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", 
    RowBox[{"EdgeArrowSize", "\[Rule]", "0.04"}]}], "]"}]}], "Input",
  CellChangeTimes->{{3.9059322609878855`*^9, 3.905932320762737*^9}, {
@@ -9468,12 +9468,12 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", 
    RowBox[{"EdgeStyle", "\[Rule]", 
     RowBox[{"Directive", "[", 
@@ -12173,12 +12173,12 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", 
    RowBox[{"EdgeStyle", "->", 
     RowBox[{"(", 
@@ -14852,12 +14852,12 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", 
    RowBox[{"Background", "\[Rule]", 
     RowBox[{"Lighter", "[", 
@@ -17510,12 +17510,12 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", 
    RowBox[{"ShowVertexLabels", "\[Rule]", "False"}]}], "]"}]}], "Input",
  CellChangeTimes->{{3.938091343668503*^9, 3.938091354200144*^9}, {
@@ -18570,12 +18570,12 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", "\[IndentingNewLine]", 
    RowBox[{"VertexLabelFunction", "\[Rule]", 
     RowBox[{"(", 
@@ -22778,9 +22778,9 @@ Cell[TextData[{
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}]], "Input",
  CellChangeTimes->{{3.9381021283125305`*^9, 3.938102174573526*^9}},
  CellLabel->"In[1]:=",
@@ -22798,7 +22798,7 @@ Cell[BoxData[
          RowBox[{"#", "[", 
           RowBox[{"[", "1", "]"}], "]"}], "]"}]}]}], "\[IndentingNewLine]", 
       "&"}], "/@", 
-     RowBox[{"qsAdjMat", "[", "\"\<TGQuotientNames\>\"", "]"}]}], "]"}]}], 
+     RowBox[{"qsStructure", "[", "\"\<TGQuotientNames\>\"", "]"}]}], "]"}]}], 
   ";"}]], "Input",
  CellChangeTimes->{{3.938102268489672*^9, 3.9381023535756283`*^9}, {
    3.9381024157738047`*^9, 3.938102522712338*^9}, {3.938102886345857*^9, 
@@ -22810,7 +22810,7 @@ Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", "\[IndentingNewLine]", 
    RowBox[{"VertexLabelFunction", "\[Rule]", "vertexLabels"}]}], 
   "]"}]], "Input",
@@ -28113,12 +28113,12 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", 
    RowBox[{"VertexLabelPlacement", "\[Rule]", 
     RowBox[{"(", 
@@ -30672,12 +30672,12 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", 
    RowBox[{"VertexLabelPlacement", "\[Rule]", "\"\<Alternate\>\""}]}], 
   "]"}]}], "Input",
@@ -33316,12 +33316,12 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", 
    RowBox[{"VertexLabelStyle", "\[Rule]", 
     RowBox[{"Directive", "[", 
@@ -35892,12 +35892,12 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", 
    RowBox[{"VertexSize", "\[Rule]", "0.5"}]}], "]"}]}], "Input",
  CellChangeTimes->{{3.938107420631805*^9, 3.9381074526328106`*^9}},
@@ -38320,12 +38320,12 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", 
    RowBox[{"VertexStyle", "\[Rule]", "Green"}]}], "]"}]}], "Input",
  CellChangeTimes->{{3.9381042631007233`*^9, 3.9381042717891426`*^9}, {
@@ -40823,12 +40823,12 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", "\[IndentingNewLine]", 
    RowBox[{"HighlightMirrorSymmetriesVertexStyle", "\[Rule]", "Green"}]}], 
   "]"}]}], "Input",
@@ -44855,12 +44855,12 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", "\[IndentingNewLine]", 
    RowBox[{"HighlightMirrorSymmetries", "\[Rule]", "False"}]}], 
   "]"}]}], "Input",
@@ -49023,9 +49023,9 @@ genus:\
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}]], "Input",
  CellChangeTimes->{{3.93810581069778*^9, 3.938105890751758*^9}},
  CellLabel->"In[1]:=",
@@ -49059,7 +49059,7 @@ Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "400"}], ",", " ", 
    RowBox[{"VertexSize", "\[Rule]", "0.2"}], ",", " ", 
    RowBox[{"EdgeArrowSize", "\[Rule]", "0.04"}], ",", " ", 
@@ -49732,13 +49732,13 @@ of the same genus:"
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"fullgraph", " ", "=", " ", 
-   RowBox[{"VisualizeQuotientSequences", "[", "qsAdjMat", "]"}]}], 
+   RowBox[{"VisualizeQuotientSequences", "[", "qsStructure", "]"}]}], 
   ";"}]}], "Input",
  CellChangeTimes->{{3.938108095263487*^9, 3.938108096187474*^9}, {
   3.938167391612345*^9, 3.938167391807413*^9}},
@@ -49791,7 +49791,7 @@ Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "400"}], ",", " ", 
    RowBox[{"VertexSize", "\[Rule]", "0.2"}], ",", " ", 
    RowBox[{"EdgeArrowSize", "\[Rule]", "0.04"}], ",", " ", 
@@ -50897,9 +50897,9 @@ subgraph specified by a set of kept vertices:"
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}]], "Input",
  CellChangeTimes->{{3.93810581069778*^9, 3.938105890751758*^9}},
  CellLabel->"In[1]:=",
@@ -50935,7 +50935,7 @@ Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "400"}], ",", " ", 
    RowBox[{"VertexSize", "\[Rule]", "0.2"}], ",", " ", 
    RowBox[{"EdgeArrowSize", "\[Rule]", "0.04"}], ",", " ", 
@@ -51660,13 +51660,13 @@ specified by a set of kept vertices:"
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"fullgraph", " ", "=", " ", 
-   RowBox[{"VisualizeQuotientSequences", "[", "qsAdjMat", "]"}]}], 
+   RowBox[{"VisualizeQuotientSequences", "[", "qsStructure", "]"}]}], 
   ";"}]}], "Input",
  CellChangeTimes->{{3.938108095263487*^9, 3.938108096187474*^9}, {
   3.938167391612345*^9, 3.938167391807413*^9}},
@@ -51715,7 +51715,7 @@ Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "400"}], ",", " ", 
    RowBox[{"VertexSize", "\[Rule]", "0.2"}], ",", " ", 
    RowBox[{"EdgeArrowSize", "\[Rule]", "0.04"}], ",", " ", 
@@ -52580,9 +52580,9 @@ branching out into three distinct quotients of the same genus:"
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}]], "Input",
  CellChangeTimes->{{3.93810581069778*^9, 3.938105890751758*^9}},
  CellLabel->"In[1]:=",
@@ -52615,7 +52615,7 @@ Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", "\[IndentingNewLine]", 
    RowBox[{"EdgeFilter", "\[Rule]", 
     RowBox[{"(", 
@@ -55682,9 +55682,9 @@ the same genus:"
 
 Cell[BoxData[
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}]], "Input",
  CellChangeTimes->{{3.93810581069778*^9, 3.938105890751758*^9}},
  CellLabel->"In[1]:=",
@@ -55717,7 +55717,7 @@ Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", "\[IndentingNewLine]", 
    RowBox[{"EdgeFilter", "\[Rule]", 
     RowBox[{"(", 
@@ -60397,12 +60397,12 @@ Cell[CellGroupData[{
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{"VisualizeQuotientSequences", "[", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", " ", 
    RowBox[{"LayerDistributionFunction", " ", "\[Rule]", 
     RowBox[{"(", 
@@ -62798,14 +62798,14 @@ Cell["Construct the normal subgroup tree graph:", "ExampleText",
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"qsAdjMat", "=", 
+  RowBox[{"qsStructure", "=", 
    RowBox[{
-   "HCExampleData", "[", "\"\<(2,4,6)-adjMat-BBG_35_sparse.hcqs\>\"", "]"}]}],
+   "HCExampleData", "[", "\"\<(2,4,6)-QSS-BBG_35_sparse.hcqs\>\"", "]"}]}],
    ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"g", "=", 
    RowBox[{"VisualizeQuotientSequences", "[", 
-    RowBox[{"qsAdjMat", ",", " ", 
+    RowBox[{"qsStructure", ",", " ", 
      RowBox[{"ImageSize", "\[Rule]", "530"}]}], "]"}]}], ";"}]}], "Input",
  CellChangeTimes->{{3.93813733295385*^9, 3.938137339201536*^9}, 
    3.938139347258637*^9},
@@ -62825,7 +62825,7 @@ Cell[BoxData[{
   RowBox[{"otherQuotients", "=", 
    RowBox[{"DeleteCases", "[", 
     RowBox[{
-     RowBox[{"qsAdjMat", "[", "\"\<TGQuotientNames\>\"", "]"}], ",", 
+     RowBox[{"qsStructure", "[", "\"\<TGQuotientNames\>\"", "]"}], ",", 
      "startingQuotient"}], "]"}]}], ";"}]}], "Input",
  CellChangeTimes->{{3.9381393066587734`*^9, 3.9381393509353933`*^9}, {
   3.938139413471155*^9, 3.938139429009046*^9}, {3.938139485548666*^9, 
@@ -62917,12 +62917,12 @@ Cell[BoxData[
          RowBox[{"Table", "[", 
           RowBox[{
            RowBox[{
-            RowBox[{"qsAdjMat", "[", "\"\<MirrorSymmetries\>\"", "]"}], "[", 
+            RowBox[{"qsStructure", "[", "\"\<MirrorSymmetries\>\"", "]"}], "[", 
             RowBox[{"[", 
              RowBox[{
               RowBox[{"Position", "[", 
                RowBox[{
-                RowBox[{"qsAdjMat", "[", "\"\<TGQuotientNames\>\"", "]"}], 
+                RowBox[{"qsStructure", "[", "\"\<TGQuotientNames\>\"", "]"}], 
                 ",", " ", "item"}], "]"}], "[", 
               RowBox[{"[", 
                RowBox[{"1", ",", "1"}], "]"}], "]"}], "]"}], "]"}], 
@@ -63063,7 +63063,7 @@ Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"VisualizeQuotientSequences", "[", "\[IndentingNewLine]", "\t", 
-  RowBox[{"qsAdjMat", ",", " ", 
+  RowBox[{"qsStructure", ",", " ", 
    RowBox[{"ImageSize", "\[Rule]", "530"}], ",", 
    RowBox[{"HighlightSubgraph", "\[Rule]", "True"}], ",", 
    "\[IndentingNewLine]", 

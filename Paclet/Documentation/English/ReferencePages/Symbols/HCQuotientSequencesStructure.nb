@@ -3269,7 +3269,7 @@ Cell[BoxData[
  CellID->538049765,ExpressionUUID->"7873e5a2-c799-4177-8bcb-9584e4ec3dfe"],
 
 Cell[TextData[{
- "Find some of the longest coherent sequences by using the normal subgroup \
+ "Find some of the longest coherent sequences of translation groups associated with unit cells suitable for the supercell method by using the normal subgroup \
 tree graph through ",
  Cell[BoxData[
   ButtonBox["VisualizeQuotientSequences",

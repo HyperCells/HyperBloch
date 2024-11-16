@@ -62787,7 +62787,7 @@ Cell[BoxData[
  CellID->75766612,ExpressionUUID->"372cdb11-4ab9-43b3-81ad-a42b77c7baf9"],
 
 Cell["\<\
-Search for coherent quotient sequences for the supercell method.\
+Search for coherent sequences of translation groups associated with unit cells suitable for the supercell method.\
 \>", "ExampleText",
  CellChangeTimes->{{3.9381416750870056`*^9, 3.938141743433075*^9}},
  CellID->611469613,ExpressionUUID->"669dd00f-3864-c242-848a-31752150fd6c"],

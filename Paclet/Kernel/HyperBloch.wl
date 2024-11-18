@@ -14,13 +14,13 @@ HCSupercellModelGraph::usage = "HCSupercellModelGraph[assoc] represents a superc
 HBDisclinationModelGraph::usage = "HBDisclinationModelGraph[assoc] represents a model graph with disclinations with its properties defined by the Association assoc";
 HBDisclinationSupercellModelGraph::usage = "HBDisclinationSupercellModelGraph[assoc] represents a supercell model graph with disclinations with its properties defined by the Association assoc";
 
-HCQuotientSequencesStructure::usage = "HCQuotientSequencesStructure[assoc] represents a quotient sequences structure adjacency matrix specifying normal subgroup relations of translation groups with its properties defined by the Association assoc";
+HCQuotientSequencesStructure::usage = "HCQuotientSequencesStructure[assoc] represents a quotient-sequences-structure adjacency matrix specifying normal subgroup relations of translation groups with its properties defined by the Association assoc";
 
 
 ImportCellGraphString::usage = "ImportCellGraphString[\"string\"] imports a cell graph from a string and returns an HCCellGraph";
 ImportModelGraphString::usage = "ImportModelGraphString[\"string\"] imports a model graph from a string and returns an HCModelGraph";
 ImportSupercellModelGraphString::usage = "ImportSupercellModelGraphString[\"string\"] imports a supercell model graph from a string and returns an HCSupercellModelGraph";
-ImportQuotientSequencesStructureString::usage = "ImportQuotientSequencesStructureString[\"string\"] import a quotient sequences structure adjacency matrix specifying normal subgroup relations of translation groups from a string and returns a HCQuotientSequencesStructure";
+ImportQuotientSequencesStructureString::usage = "ImportQuotientSequencesStructureString[\"string\"] import a quotient-sequences-structure adjacency matrix specifying normal subgroup relations of translation groups from a string and returns a HCQuotientSequencesStructure";
 
 HCExampleData::usage = "HCExampleData[\"name\"] imports and returns the specified HCC/HCM/HCS/HCQS example file from \"PatrickMLenggenhager/HyperBloch/ExampleData/\".";
 
@@ -50,7 +50,7 @@ ShowCellBoundary::usage = "ShowCellBoundary[cgraph] shows the boundary and bound
 
 VisualizeCellGraph::usage = "VisualizeCellGraph[cgraph] visualizes the cell graph cgraph with head HCCellGraph in the Poincar\[EAcute] disk with the Schwarz triangles in the background";
 VisualizeModelGraph::usage = "VisualizeModelGraph[mgraph] visualizes the (supercell) model graph mgraph with head HCModelGraph (HCSupercellModelGraph) in the Poincar\[EAcute] disk with the Schwarz triangles in the background";
-VisualizeQuotientSequences::usage = "VisualizeQuotientSequences[qsStructure] visualizes the quotient sequences structure adjacency matrix in qsStructure with head HCAdjacencyMatrix as a tree graph as a LayeredDigraphEmbedding";
+VisualizeQuotientSequences::usage = "VisualizeQuotientSequences[qsStructure] visualizes the quotient-sequences-structure adjacency matrix in qsStructure with head HCAdjacencyMatrix as a tree graph as a LayeredDigraphEmbedding";
 
 AbelianBlochHamiltonianExpression::usage = "AbelianBlochHamiltonianExpression[mgraph, norb, onsite, hoppings, k] constructs the Abelian Bloch Hamiltonian \[ScriptCapitalH](k) of the HCModelGraph or HCSupercellModelGraph mgraph with the number of orbitals at each site specified by norb, the onsite term by onsite, and the hopping along an edge by hoppings in terms of momenta k[i]";
 AbelianBlochHamiltonian::usage = "AbelianBlochHamiltonian[mgraph, norb, onsite, hoppings] returns the Abelian Bloch Hamiltonian \[ScriptCapitalH](k) of the HCModelGraph or HCSupercellModelGraph mgraph with the number of orbitals at each site specified by norb, the onsite term by onsite, and the hopping along an edge by hoppings as a function k :> \[ScriptCapitalH](k)";
@@ -492,7 +492,7 @@ ImportSupercellModelGraphString[str_]:=Module[{
 
 
 (* ::Subsection::Closed:: *)
-(*Import of quotient sequences structure adjacency matrices:*)
+(*Import of quotient-sequences-structure adjacency matrices:*)
 
 
 Options[ImportQuotientSequencesStructureString] = {	

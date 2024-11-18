@@ -37,7 +37,7 @@ HCQuotientSequencesStructure"], "[",
    StyleBox["assoc", "TI"], 
    StyleBox["]", "TI"]}]], "InlineFormula",ExpressionUUID->
   "a30852cf-48e6-db4c-8ea9-b5536b8f798c"],
- "\[LineSeparator]represents a quotient sequences structure adjacency matrix \
+ "\[LineSeparator]represents a quotient-sequences-structure adjacency matrix \
 that capture the normal subgroup relation between pairwise distinct \
 translation groups of corresponding triangle group quotients with its \
 properties defined by the ",
@@ -71,7 +71,7 @@ Cell[TextData[{
  Cell[BoxData[
   StyleBox["assoc", "TI"]], "InlineFormula",ExpressionUUID->
   "d457006c-cd8b-40b7-aad1-b4ca313915b1"],
- " of a quotient sequences structure adjacency matrix has the following \
+ " of a quotient-sequences-structure adjacency matrix has the following \
 keys:"
 }], "Notes",
  CellChangeTimes->{{3.905668884321773*^9, 3.905668930374688*^9}, {

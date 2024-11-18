@@ -342,7 +342,7 @@ Cell[BoxData[
  CellID->65331860,ExpressionUUID->"feb5a5e6-f6e5-4fbb-94bd-1cfad59bb277"],
 
 Cell["\<\
-Import the quotient sequences structure adjacency matrix from a file by first importing \
+Import the quotient-sequences-structure adjacency matrix from a file by first importing \
 the file's content:\
 \>", "ExampleText",
  CellChangeTimes->{{3.9382511299691696`*^9, 3.9382511970851192`*^9}},
@@ -362,7 +362,7 @@ sparse.hcqs\>\"", "]"}]}], ";"}]], "Input",
  CellID->698049386,ExpressionUUID->"bb3768b5-91da-2f47-aa8b-330bd96af9c8"],
 
 Cell["\<\
-Next, import the quotient sequences structure adjacency matrix from the string:\
+Next, import the quotient-sequences-structure adjacency matrix from the string:\
 \>", "ExampleText",
  CellChangeTimes->{{3.9066015423794456`*^9, 3.906601547735037*^9}, {
   3.93825162754916*^9, 3.938251647479412*^9}},

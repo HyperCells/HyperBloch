@@ -15,12 +15,14 @@ HBDisclinationModelGraph::usage = "HBDisclinationModelGraph[assoc] represents a 
 HBDisclinationSupercellModelGraph::usage = "HBDisclinationSupercellModelGraph[assoc] represents a supercell model graph with disclinations with its properties defined by the Association assoc";
 
 HCQuotientSequencesStructure::usage = "HCQuotientSequencesStructure[assoc] represents a quotient-sequences-structure adjacency matrix specifying normal subgroup relations of translation groups with its properties defined by the Association assoc";
+HCPGMatrices::usage = "HCPGMatrices[assoc] represents a collection of point-group matrices with its properties defined by the Association assoc";
 
 
 ImportCellGraphString::usage = "ImportCellGraphString[\"string\"] imports a cell graph from a string and returns an HCCellGraph";
 ImportModelGraphString::usage = "ImportModelGraphString[\"string\"] imports a model graph from a string and returns an HCModelGraph";
 ImportSupercellModelGraphString::usage = "ImportSupercellModelGraphString[\"string\"] imports a supercell model graph from a string and returns an HCSupercellModelGraph";
 ImportQuotientSequencesStructureString::usage = "ImportQuotientSequencesStructureString[\"string\"] import a quotient-sequences-structure adjacency matrix specifying normal subgroup relations of translation groups from a string and returns a HCQuotientSequencesStructure";
+ImportPGMatricesString::usage = "ImportPGMatricesString[\"string\"] imports a collection of point-group and corresponding properties from a string and returns HCPGMatrices";
 
 HCExampleData::usage = "HCExampleData[\"name\"] imports and returns the specified HCC/HCM/HCS/HCQS example file from \"PatrickMLenggenhager/HyperBloch/ExampleData/\".";
 
@@ -175,7 +177,8 @@ HCSupercellModelGraph[scmgraph_][key_] := scmgraph[key]
 HBDisclinationModelGraph[mgraph_][key_] := mgraph[key]
 HBDisclinationSupercellModelGraph[scmgraph_][key_] := scmgraph[key]
 
-HCQuotientSequencesStructure[qsStructure_][key_] := qsStructure[key]
+HCQuotientSequencesAdjMat[qsAdjMat_][key_] := qsAdjMat[key]
+HCPGMatrices[pgMats_][key_] := pgMats[key]
 
 
 (* ::Subsection::Closed:: *)
@@ -530,6 +533,69 @@ ImportQuotientSequencesStructureString[str_, opts:OptionsPattern[{ImportQuotient
 	 "MirrorSymmetries" -> mspLst,
 	 "AdjacencyMatrix" -> adjMat
 	|>]
+]
+
+
+(* ::Subsection::Closed:: *)
+(*Import of point-group matrices*)
+
+
+Options[ImportPGMatricesString] = {
+	ToDense -> False
+};
+
+ImportPGMatricesString[str_, opts:OptionsPattern[{ImportPGMatricesString}]] := Module[
+	{version, tg, tgQuotient, sparse, absPGMats, symPGMats, PGMats, symmetries, dim},
+
+	If[StringStartsQ[str, "HyperCells"],    
+		{version, tg, tgQuotient, sparse, absPGMats, symPGMats} = 
+			StringSplit[StringReplace[str, {"["->"{", "]"->"}"}], "\n"];
+		version = StringReplace[version, RegularExpression["HyperCells HCS version ([0-9.]+)"] -> "$1"];,
+		{tg, tgQuotient, sparse, absPGMats, symPGMats} = 
+			StringSplit[StringReplace[str, {"["->"{", "]"->"}"}], "\n"];
+		version = "";
+	];
+
+	(* info *)
+	tg = ToExpression@tg; (* triangle group signature *)
+	tgQuotient = ToExpression@tgQuotient ; (* {TGQuotientName, Order, Genus, Action, relators} *)
+	absPGMats = ToExpression@absPGMats; (* pg-matrix elements *)
+	symPGMats = ToExpression@symPGMats; (* pg-matrix elements *)
+	
+	(* point-group matrices *)
+	PGMats = Join[absPGMats, Transpose[{symPGMats[[;;, 1, 1]], symPGMats[[;;, 2]]}]];
+	PGMats = AssociationThread[PGMats[[;;, 1]], PGMats[[;;, 2]]];
+	
+	(* symmetries in the (proper) triangle group *)
+	symmetries = Join[AssociationThread[absPGMats[[;;, 1]], absPGMats[[;;, 1]]], AssociationThread[symPGMats[[;;, 1, 1]], symPGMats[[;;, 1, 2]]]];
+	
+	(* for sparse rep., adjust format *)
+	sparse = If[sparse == "true", True, False];
+	dim = 2*tgQuotient[[3]]; (* 2*Genus *)
+	If[sparse, 
+		If[OptionValue[ToDense],
+			PGMats = <| 
+				Table[sym ->
+					Normal@SparseArray[#[[1]] -> #[[2]]&/@PGMats[sym], {dim, dim}],
+				{sym, symmetries}]
+			|>,
+			PGMats = <| 
+				Table[sym ->
+					SparseArray[#[[1]] -> #[[2]]&/@PGMats[sym], {dim, dim}],
+				{sym, symmetries}]
+			|>
+		]
+	];
+		
+	HCPGMatrices[Join[<|
+	  "TriangleGroup" -> tg, 
+	  "TGQuotientName" -> tgQuotient[[1]], 
+	  "TGQuotientRelators" -> tgQuotient[[5]], 
+	  "Genus" -> tgQuotient[[3]], 
+	  "Symmetries" -> symmetries
+	  |>, 
+	 PGMats]
+	]
 ]
 
 

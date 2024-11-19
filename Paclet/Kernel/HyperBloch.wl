@@ -14,12 +14,15 @@ HCSupercellModelGraph::usage = "HCSupercellModelGraph[assoc] represents a superc
 HBDisclinationModelGraph::usage = "HBDisclinationModelGraph[assoc] represents a model graph with disclinations with its properties defined by the Association assoc";
 HBDisclinationSupercellModelGraph::usage = "HBDisclinationSupercellModelGraph[assoc] represents a supercell model graph with disclinations with its properties defined by the Association assoc";
 
+HCQuotientSequencesStructure::usage = "HCQuotientSequencesStructure[assoc] represents a quotient-sequences-structure adjacency matrix specifying normal subgroup relations of translation groups with its properties defined by the Association assoc";
+
 
 ImportCellGraphString::usage = "ImportCellGraphString[\"string\"] imports a cell graph from a string and returns an HCCellGraph";
 ImportModelGraphString::usage = "ImportModelGraphString[\"string\"] imports a model graph from a string and returns an HCModelGraph";
 ImportSupercellModelGraphString::usage = "ImportSupercellModelGraphString[\"string\"] imports a supercell model graph from a string and returns an HCSupercellModelGraph";
+ImportQuotientSequencesStructureString::usage = "ImportQuotientSequencesStructureString[\"string\"] import a quotient-sequences-structure adjacency matrix specifying normal subgroup relations of translation groups from a string and returns a HCQuotientSequencesStructure";
 
-HCExampleData::usage = "HCExampleData[\"name\"] imports and returns the specified HCC/HCM/HCS example file from \"PatrickMLenggenhager/HyperBloch/ExampleData/\".";
+HCExampleData::usage = "HCExampleData[\"name\"] imports and returns the specified HCC/HCM/HCS/HCQS example file from \"PatrickMLenggenhager/HyperBloch/ExampleData/\".";
 
 IntroduceDisclination::usage = "IntroduceDisclination[mgraph, FrankAngleIncrement, ReferenceAngleIncrement] introduces a disclination in a finite (supercell) model graph mgraph specified by a Frank angle \!\(\*SubscriptBox[\(\[Alpha]\), \(F\)]\)=FrankAngleIncrement*\[Pi]/m and a normal vector of the disclination \!\(\*OverscriptBox[\(n\), \(\[RightVector]\)]\)=RotationMatrix[ReferenceAngleIncrement*\[Pi]/m]\[CenterDot]{1, 0}, with m\[Element]{r,q,p} specified by the cell center.";
 
@@ -47,6 +50,7 @@ ShowCellBoundary::usage = "ShowCellBoundary[cgraph] shows the boundary and bound
 
 VisualizeCellGraph::usage = "VisualizeCellGraph[cgraph] visualizes the cell graph cgraph with head HCCellGraph in the Poincar\[EAcute] disk with the Schwarz triangles in the background";
 VisualizeModelGraph::usage = "VisualizeModelGraph[mgraph] visualizes the (supercell) model graph mgraph with head HCModelGraph (HCSupercellModelGraph) in the Poincar\[EAcute] disk with the Schwarz triangles in the background";
+VisualizeQuotientSequences::usage = "VisualizeQuotientSequences[qsStructure] visualizes the quotient-sequences-structure adjacency matrix in qsStructure with head HCAdjacencyMatrix as a tree graph as a LayeredDigraphEmbedding";
 
 AbelianBlochHamiltonianExpression::usage = "AbelianBlochHamiltonianExpression[mgraph, norb, onsite, hoppings, k] constructs the Abelian Bloch Hamiltonian \[ScriptCapitalH](k) of the HCModelGraph or HCSupercellModelGraph mgraph with the number of orbitals at each site specified by norb, the onsite term by onsite, and the hopping along an edge by hoppings in terms of momenta k[i]";
 AbelianBlochHamiltonian::usage = "AbelianBlochHamiltonian[mgraph, norb, onsite, hoppings] returns the Abelian Bloch Hamiltonian \[ScriptCapitalH](k) of the HCModelGraph or HCSupercellModelGraph mgraph with the number of orbitals at each site specified by norb, the onsite term by onsite, and the hopping along an edge by hoppings as a function k :> \[ScriptCapitalH](k)";
@@ -102,6 +106,17 @@ Elements;
 CellGraph;
 IndicateDisclination;
 DisclinationLineStyle;
+
+EdgeArrowPosition;
+HighlightMirrorSymmetries;
+HighlightMirrorSymmetriesVertexStyle;
+HighlightSubgraph;
+HighlightSubgraphEdgeStyle;
+LayerDistributionFunction;
+ShowVertexLabels;
+VertexFilter;
+VertexLabelPlacement;
+VertexLabelFunction;
 
 SymmetrizeFlake;
 
@@ -159,6 +174,8 @@ HCSupercellModelGraph[scmgraph_][key_] := scmgraph[key]
 
 HBDisclinationModelGraph[mgraph_][key_] := mgraph[key]
 HBDisclinationSupercellModelGraph[scmgraph_][key_] := scmgraph[key]
+
+HCQuotientSequencesStructure[qsStructure_][key_] := qsStructure[key]
 
 
 (* ::Subsection::Closed:: *)
@@ -475,6 +492,48 @@ ImportSupercellModelGraphString[str_]:=Module[{
 
 
 (* ::Subsection::Closed:: *)
+(*Import of quotient-sequences-structure adjacency matrices:*)
+
+
+Options[ImportQuotientSequencesStructureString] = {	
+	ToDense -> False
+};
+
+ImportQuotientSequencesStructureString[str_, opts:OptionsPattern[{ImportQuotientSequencesStructureString}]]:=Module[
+	{version, tg, bg, tgQuotientNames, mspLst, sparse, adjMat, genusLst, dim},
+	 
+	If[StringStartsQ[str, "HyperCells"],    
+		{version, tg, bg, tgQuotientNames, mspLst, sparse, adjMat} = 
+			StringSplit[StringReplace[str, {"["->"{", "]"->"}"}], "\n"];
+		version = StringReplace[version, RegularExpression["HyperCells HCS version ([0-9.]+)"] -> "$1"];,
+		{tg, bg, tgQuotientNames, mspLst, sparse, adjMat} = 
+			StringSplit[StringReplace[str, {"["->"{", "]"->"}"}], "\n"];
+		version = "";
+	];
+
+	(* info *)
+	tg = ToExpression@tg; (* triangle group signature *) 
+	tgQuotientNames = ToExpression@tgQuotientNames; 
+	bg = ToExpression@bg; (* bound by genus *)
+	mspLst = ToExpression@mspLst; (* binary list of mirror symmetries *)
+	adjMat = ToExpression@adjMat; (* adjacency matrix *)
+	
+	(* for sparse rep., adjust format *)
+	sparse = If[sparse == "true", True, False];
+	dim = Length[tgQuotientNames];
+	If[sparse, adjMat = SparseArray[#[[1]] -> #[[2]]&/@adjMat, {dim, dim}]; If[OptionValue[ToDense], adjMat = Normal@adjMat]];
+
+	HCQuotientSequencesStructure[<|
+	 "TriangleGroup" -> tg,
+	 "BoundByGenus" -> bg,
+	 "TGQuotientNames" -> tgQuotientNames,
+	 "MirrorSymmetries" -> mspLst,
+	 "AdjacencyMatrix" -> adjMat
+	|>]
+]
+
+
+(* ::Subsection::Closed:: *)
 (*Example Data*)
 
 
@@ -484,12 +543,13 @@ HCExampleData[filename_] := Module[{
 	Switch[StringSplit[filename, "."][[-1]],
 		"hcc", ImportCellGraphString[content],
 		"hcm", ImportModelGraphString[content],
-		"hcs", ImportSupercellModelGraphString[content]
+		"hcs", ImportSupercellModelGraphString[content],
+		"hcqs", ImportQuotientSequencesStructureString[content]
 	]
 ]
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Introduce disclination defects*)
 
 
@@ -582,7 +642,7 @@ IntroduceDisclination[mgraph_HCModelGraph|mgraph_HCSupercellModelGraph, FrankAng
 	 {i, Length[faces]}]; (* facesstr is a misnomer ("inherited") *)
 	
 	(* Check if the model graph describes a Lieb lattice: *)
-	IsLieb = (Length[edgesOld[[1, 3, Sequence@@cellIdx, 2]]] == 0);
+	IsLieb = Length[edgesOld[[1, 3, Sequence@@cellIdx, 2]]] == 0;
 	tagIndices = If[IsLieb, {{3, 2}, {3, 2}}, {{3, 2, 2}, {3, 2, 3}}]; (* indices for tagging edges (for the glueing procedure) *)
 	
 	(* --------------------------------------------------- *)
@@ -1694,7 +1754,7 @@ Module[{
 				PlotRange -> 1.1{{-1, 1}, {-1, 1}},
 				ImageSize -> 500],
 			ShowTriangles[mgraph["TriangleGroup"], DiskCenter -> mgraph["CellCenter"],
-				Sequence@@FilterRules[{opts},Join@@(Options/@{
+				Sequence@@FilterRules[{opts}, Join@@(Options/@{
 					ShowTriangles,
 					GetTriangleTessellation,
 					Graphics,
@@ -1714,6 +1774,202 @@ Module[{
 		{}]],
 		KeyValueMap[#1[mgraph, Sequence@@#2]&, sel[OptionValue[Elements]]],
 		Sequence@@FilterRules[{opts}, {ImageSize}]
+	]
+]
+
+
+(* ::Subsubsection::Closed:: *)
+(*Quotient sequences*)
+
+
+TreeGraphVertexLabelAlternatePlacement[graph_] := Module[
+	{vertxPositions, vertxPositionLayered, startPlacement},
+	startPlacement = {Above, Below}; (* private option *)
+	vertxPositions = AssociationThread[VertexList@graph, GraphEmbedding[graph]]; (* of the form vertex -> coordinates *)
+	vertxPositionLayered = Reverse@KeySort[GroupBy[SortBy[vertxPositions, First], Last]]; (* of the form layerYCoord -> SubsetVertxPositions *)
+	<|AssociationThread[#, Flatten[ConstantArray[startPlacement, Round[Length[#]/2]+1]][[;;Length[#]]]]&/@Keys[Values[vertxPositionLayered]]|> (* of the form vertex -> Placement *)
+]
+
+
+TreeGraphVertexLabel[tgQuotientNames_, Vlabel_, Vplace_, mspLst_, frame_, opts:OptionsPattern[{VisualizeQuotientSequences}]] := 	
+	If[OptionValue[HighlightMirrorSymmetries],
+		Table[q -> Placed[{"", "T" <> ToString[q[[1]]] <> "." <> ToString[q[[2]]] <> Vlabel[q]}, Vplace[q]{1, 1}, frame], {q, tgQuotientNames}],
+		Table[q -> Placed[{"", "T" <> ToString[q[[1]]] <> "." <> ToString[q[[2]]] <> "\n\!\(\*SubscriptBox[\(S\), \(m\)]\):" <> If[mspLst[[Position[tgQuotientNames, q][[1, 1]]]] == 1, " \[Checkmark]", " \[Times]"] <> Vlabel[q]}, Vplace[q]{1, 1}, frame], {q, tgQuotientNames}]
+	]
+
+
+Options[VisualizeQuotientSequences] = {
+	EdgeArrowSize -> 0.025,
+	EdgeArrowPosition -> 0.5,
+	EdgeFilter -> (True&),
+	EdgeStyle -> Directive[Darker[Blue, 0.25], AbsoluteThickness[2]],
+	HighlightMirrorSymmetries -> True,
+	HighlightMirrorSymmetriesVertexStyle -> Darker[Red, 0.25],
+	HighlightSubgraph -> False,
+	HighlightSubgraphEdgeStyle -> Directive[Darker[Red, 0.25], AbsoluteThickness[3], Opacity[1]],
+	LayerDistributionFunction -> (#^0.98&),
+	ShowVertexLabels -> True,
+	VertexFilter -> (True&),
+	VertexLabelPlacement -> (Below&),
+	VertexLabelStyle -> Directive[TextAlignment -> Left, 10, Black],
+	VertexLabelFunction -> (""&)
+};
+
+VisualizeQuotientSequences[qsStructure_HCQuotientSequencesStructure, opts:OptionsPattern[{VisualizeQuotientSequences, Graph, AdjacencyGraph, Subgraph, HighlightGraph, Framed, Style, Graphics, Rectangle}]]:=Module[
+	{version, tg, bg, tgQuotientNames,  mspLst, genusLst, vertexLabels, Mat, NNMat, frame, rawGraph,
+	 vertexLayerPosition, distinctGenera, highlights, distL, FullTreeGraph, SubTreeGraph, Vlabel, Vplace,
+	 keptVerticesIdx, keptVertices, keptVerticesLayers, keptVerticesLabels, keptVerticesHighlights, keptEdges, 
+	 LowestGenusLayerPosition},
+	     	     
+	(* Get needed objects: *)
+	(* ------------------ *)
+	
+	(* infos *)
+	tg = qsStructure["TriangleGroup"]; (* triangle group signature *) 
+	bg = qsStructure["BoundByGenus"]; (* boundByGenus *) 
+	tgQuotientNames = qsStructure["TGQuotientNames"];
+	genusLst = tgQuotientNames[[;;,1]];
+	mspLst = qsStructure["MirrorSymmetries"];
+	
+	(* adjacency matrix *)
+	Mat = qsStructure["AdjacencyMatrix"];
+	NNMat = Mat - Sign[MatrixPower[Mat, 2]];
+
+	(* ---------------------------------- *)
+	(* Construct tree graph specifications : *)
+	(* ---------------------------------- *)
+
+	(* highlight the mirror symmetries *)
+	highlights = If[OptionValue[HighlightMirrorSymmetries], 
+		Flatten[Table[If[mspLst[[i]] == 1, {tgQuotientNames[[i]]}, {}], {i, Length@mspLst}], 1], {}]; 
+
+	(* Construct vertex layer position.*)
+	distL = OptionValue[LayerDistributionFunction];
+	distinctGenera = Values[Counts@genusLst];
+	LowestGenusLayerPosition = 0; (* privat option *)
+	vertexLayerPosition = Join[{LowestGenusLayerPosition},
+					Flatten[Table[Table[-distL[i], {j, distinctGenera[[i]]}], {i, CountDistinct@genusLst}], 1][[2;;]]]; 
+
+	(* ------------------------------------ *)
+	(* Construct vertex labels and edge shape: *)
+	(* ------------------------------------ *)
+ 
+	(* construct function for framed vertex labels *)
+	frame = Framed[
+		Style[#, OptionValue[VertexLabelStyle], Sequence@@FilterRules[{opts}, {Style}]], 
+		ImageSize -> Automatic,
+		Sequence@@FilterRules[{opts}, Join@@(Options/@{Framed, Graphics, Rectangle})], 
+		Background -> Lighter[Gray, 0.9], RoundingRadius -> 4, FrameMargins -> 2, ContentPadding -> False
+	]&;
+	
+	(* --------------- *)
+	(* Construct graph: *)
+	(* --------------- *)
+	(* Note: adjust vertex names with VertexReplace *)	
+
+	rawGraph = VertexReplace[
+		AdjacencyGraph[NNMat, 
+			GraphLayout -> {
+				"LayeredDigraphEmbedding", 
+				"RootVertex" -> 1,
+				"Tolerance" -> 0.01,
+				"VertexLayerPosition" -> vertexLayerPosition}], 
+		Thread[Range[Length@tgQuotientNames] -> tgQuotientNames]
+	];
+		
+	(* vertex labels *)
+	Vplace = OptionValue[VertexLabelPlacement];
+	Vplace = If[Vplace === "Alternate", TreeGraphVertexLabelAlternatePlacement[rawGraph], Vplace];
+	Vlabel = OptionValue[VertexLabelFunction]; (* supplements Tg.n labels *)
+	vertexLabels = TreeGraphVertexLabel[tgQuotientNames, Vlabel, Vplace, mspLst, frame, HighlightMirrorSymmetries -> OptionValue[HighlightMirrorSymmetries]];
+	
+	(* complete graph *)
+	FullTreeGraph = Graph[rawGraph,
+		Sequence@@FilterRules[{opts}, {Graph, AdjacencyGraph, VertexStyle, VertexSize, AspectRatio}],
+		VertexLabels -> If[OptionValue[ShowVertexLabels], vertexLabels, {}],
+		GraphHighlight -> highlights,
+		GraphHighlightStyle -> (# -> VertexStyle -> OptionValue[HighlightMirrorSymmetriesVertexStyle]&/@ highlights),
+		VertexStyle -> Black,
+		VertexSize -> {"Scaled", 0.01},
+		EdgeShapeFunction -> {GraphElementData[{"FilledArcArrow", "ArrowSize" -> OptionValue[EdgeArrowSize], "ArrowPositions" -> OptionValue[EdgeArrowPosition]}]},
+		EdgeStyle -> If[ Head[OptionValue[EdgeStyle]] === List, 
+						Join[{Directive[Darker[Blue, 0.25], AbsoluteThickness[2]]}, OptionValue[EdgeStyle]],
+						{Directive[Darker[Blue, 0.25], AbsoluteThickness[2]], OptionValue[EdgeStyle]}
+						],	
+		AspectRatio -> 0.5, 
+		Sequence@@FilterRules[{opts}, {ImageSize}]
+	];
+
+	(* ------------------------- *)
+	(* High-level visualizations : *)
+	(* ------------------------- *)
+	
+	If[OptionValue[EdgeFilter] === (True&) && OptionValue[VertexFilter] === (True&), FullTreeGraph, 
+	
+		(* filter through quotients *)
+		Which[
+			OptionValue[EdgeFilter] === (True&) && OptionValue[VertexFilter] =!= (True&),
+				keptVertices = Select[VertexList@FullTreeGraph, OptionValue[VertexFilter][#]&];
+				keptEdges = Select[EdgeList@FullTreeGraph, MemberQ[keptVertices, #[[1]]] && MemberQ[keptVertices, #[[2]]]&];,
+			
+			OptionValue[EdgeFilter] =!= (True&) && OptionValue[VertexFilter] === (True&),
+				keptEdges = Select[EdgeList@FullTreeGraph, OptionValue[EdgeFilter][#]&];
+				keptVertices = DeleteDuplicates[Join[keptEdges[[;;, 1]], keptEdges[[;;, 2]]]];,
+				
+			OptionValue[EdgeFilter] =!= (True&) && OptionValue[VertexFilter] =!= (True&),
+				keptEdges = Select[EdgeList@FullTreeGraph, OptionValue[EdgeFilter][#]&];
+				keptVertices = DeleteDuplicates[Join[keptEdges[[;;, 1]], keptEdges[[;;, 2]]]];
+				keptVertices = Select[keptVertices, OptionValue[VertexFilter][#]&];
+				keptEdges = Select[EdgeList@FullTreeGraph, MemberQ[keptVertices, #[[1]]] && MemberQ[keptVertices, #[[2]]]&];
+			];
+		keptVerticesIdx = Position[tgQuotientNames, #][[1, 1]]&/@keptVertices;
+		keptVerticesLayers = vertexLayerPosition[[keptVerticesIdx]];
+			
+		(* ------------------ *)
+		(* Construct subgraph: *)
+		(* ------------------ *)
+		(* construct subgraph, note that using the function Subgraph instead, returns unwanted results *)
+
+		rawGraph = Graph[keptVertices, keptEdges, 
+			GraphLayout -> {
+				"LayeredDigraphEmbedding", 
+				"RootVertex" -> keptVertices[[1]],
+				"Tolerance" -> 0.01,
+				"VertexLayerPosition" -> keptVerticesLayers} 
+		];
+		
+		(* vertex labels and highlights *)
+		Vplace = OptionValue[VertexLabelPlacement];
+		Vplace = If[Vplace === "Alternate", TreeGraphVertexLabelAlternatePlacement[rawGraph], Vplace];
+		keptVerticesLabels = TreeGraphVertexLabel[keptVertices, Vlabel, Vplace, mspLst, frame, HighlightMirrorSymmetries -> OptionValue[HighlightMirrorSymmetries]];
+		keptVerticesHighlights = If[OptionValue[HighlightMirrorSymmetries], 
+			Flatten[Table[If[mspLst[[i]] == 1, {tgQuotientNames[[i]]}, {}], {i, keptVerticesIdx}], 1], {}]; 
+		
+		SubTreeGraph = Graph[rawGraph,
+			Sequence@@FilterRules[{opts}, {Graph, AdjacencyGraph, VertexStyle, VertexSize, AspectRatio}],
+			VertexLabels -> If[OptionValue[ShowVertexLabels], keptVerticesLabels, {}],
+			GraphHighlight -> keptVerticesHighlights,
+			GraphHighlightStyle -> (# -> VertexStyle -> OptionValue[HighlightMirrorSymmetriesVertexStyle]&/@ keptVerticesHighlights),
+			VertexStyle -> Black,
+			VertexSize -> {"Scaled", 0.01}, 
+			EdgeShapeFunction -> {GraphElementData[{"FilledArcArrow", "ArrowSize" -> OptionValue[EdgeArrowSize], "ArrowPositions" -> OptionValue[EdgeArrowPosition]}]},
+			EdgeStyle -> If[ Head[OptionValue[EdgeStyle]] === List, 
+							Join[{Directive[Darker[Blue, 0.25], AbsoluteThickness[2]]}, OptionValue[EdgeStyle]],
+							{Directive[Darker[Blue, 0.25], AbsoluteThickness[2]], OptionValue[EdgeStyle]}
+						],	
+			AspectRatio -> 0.5, 
+			Sequence@@FilterRules[{opts}, {ImageSize}]
+		];
+
+		If[OptionValue[HighlightSubgraph] == False || VertexList@SubTreeGraph == tgQuotientNames, SubTreeGraph, 
+			HighlightGraph[FullTreeGraph, 
+				If[Head[OptionValue[HighlightSubgraphEdgeStyle]] === List || Head[OptionValue[HighlightSubgraphEdgeStyle]] === Rule,
+					OptionValue[HighlightSubgraphEdgeStyle],
+					Style[#, OptionValue[HighlightSubgraphEdgeStyle]]&/@EdgeList[SubTreeGraph]
+				  ],
+				Sequence@@FilterRules[{opts}, {Graph, HighlightGraph, VertexStyle, VertexSize, AspectRatio, ImageSize}]
+			]
+		]
 	]
 ]
 

@@ -29,10 +29,12 @@ PacletObject[
           "PatrickMLenggenhager`HyperBloch`HBDisclinationModelGraph",
           "PatrickMLenggenhager`HyperBloch`HBDisclinationSupercellModelGraph",
           "PatrickMLenggenhager`HyperBloch`HCCellGraph",
+          "PatrickMLenggenhager`HyperBloch`HCQuotientSequencesStructure",
           "PatrickMLenggenhager`HyperBloch`HCModelGraph",
           "PatrickMLenggenhager`HyperBloch`HCSupercellModelGraph",
           "PatrickMLenggenhager`HyperBloch`ImportCellGraphString",
           "PatrickMLenggenhager`HyperBloch`ImportModelGraphString",
+          "PatrickMLenggenhager`HyperBloch`ImportQuotientSequencesStructureString",
           "PatrickMLenggenhager`HyperBloch`ImportSupercellModelGraphString",
           "PatrickMLenggenhager`HyperBloch`IntroduceDisclination",
           "PatrickMLenggenhager`HyperBloch`NonReciprocalAbelianBlochHamiltonian",
@@ -45,7 +47,8 @@ PacletObject[
           "PatrickMLenggenhager`HyperBloch`ShowTriangles",
           "PatrickMLenggenhager`HyperBloch`TBHamiltonian",
           "PatrickMLenggenhager`HyperBloch`VisualizeCellGraph",
-          "PatrickMLenggenhager`HyperBloch`VisualizeModelGraph"
+          "PatrickMLenggenhager`HyperBloch`VisualizeModelGraph",
+          "PatrickMLenggenhager`HyperBloch`VisualizeQuotientSequences"
         }
       },
       {

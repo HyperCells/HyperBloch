@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     52198,       1282]
+NotebookDataLength[     52196,       1282]
 NotebookOptionsPosition[     43114,       1104]
-NotebookOutlinePosition[     43688,       1123]
-CellTagsIndexPosition[     43645,       1120]
+NotebookOutlinePosition[     43686,       1123]
+CellTagsIndexPosition[     43643,       1120]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -91,10 +91,10 @@ Cell[TextData[{
     "46b2a852-d3bb-4c27-8f58-7390f50acd4d"], 
    DynamicModuleBox[{$CellContext`nbobj$$ = NotebookObject[
     "728c4863-369c-4d58-b56a-a2d6cfde1cd9", 
-     "4cdc016d-3291-754a-8f50-036f50442efd"], $CellContext`cellobj$$ = 
+     "fdc727ec-d2ab-254f-b01f-acfdf751422a"], $CellContext`cellobj$$ = 
     CellObject[
     "d430b55d-6857-46af-9a2b-530f92460f42", 
-     "596345cc-2ed4-fc40-9c14-89e6be2c5cf2"]}, 
+     "b1a2da94-e12d-104e-8d84-564a30606908"]}, 
     TemplateBox[{
       GraphicsBox[{{
          Thickness[0.06], 
@@ -160,10 +160,10 @@ HBDisclinationSupercellModelGraph"]], "InlineGuideFunction",
     "203a6d97-78f8-444a-ad00-371a10d6a2f0"], 
    DynamicModuleBox[{$CellContext`nbobj$$ = NotebookObject[
     "728c4863-369c-4d58-b56a-a2d6cfde1cd9", 
-     "4cdc016d-3291-754a-8f50-036f50442efd"], $CellContext`cellobj$$ = 
+     "fdc727ec-d2ab-254f-b01f-acfdf751422a"], $CellContext`cellobj$$ = 
     CellObject[
     "fdce9ea1-310a-1648-8f66-8ca15dfd5e04", 
-     "9904d594-9e70-b847-8ef6-c7dc341fcb32"]}, 
+     "04b2f565-e0b6-8a41-b08d-b372467579c8"]}, 
     TemplateBox[{
       GraphicsBox[{{
          Thickness[0.06], 
@@ -218,10 +218,10 @@ Cell[TextData[{
     "c384250d-5050-0547-a6e2-db27bb24495a"], 
    DynamicModuleBox[{$CellContext`nbobj$$ = NotebookObject[
     "728c4863-369c-4d58-b56a-a2d6cfde1cd9", 
-     "4cdc016d-3291-754a-8f50-036f50442efd"], $CellContext`cellobj$$ = 
+     "fdc727ec-d2ab-254f-b01f-acfdf751422a"], $CellContext`cellobj$$ = 
     CellObject[
     "5c12251d-bc78-3142-bb66-8ea2f7a236c2", 
-     "f712f417-d5eb-274f-b78e-a4125d6808b8"]}, 
+     "eefcb34a-6ff0-dc45-be87-dddecde137bb"]}, 
     TemplateBox[{
       GraphicsBox[{{
          Thickness[0.06], 
@@ -1102,7 +1102,7 @@ Cell["Bloch", "Keywords",
 }, Open  ]]
 }, Open  ]]
 },
-WindowSize->{1269, 652.5},
+WindowSize->{1269, 647},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 TaggingRules-><|"Paclet" -> "PatrickMLenggenhager/HyperBloch"|>,
 Magnification:>1.1 Inherited,

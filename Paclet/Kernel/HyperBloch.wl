@@ -177,7 +177,7 @@ HCSupercellModelGraph[scmgraph_][key_] := scmgraph[key]
 HBDisclinationModelGraph[mgraph_][key_] := mgraph[key]
 HBDisclinationSupercellModelGraph[scmgraph_][key_] := scmgraph[key]
 
-HCQuotientSequencesAdjMat[qsAdjMat_][key_] := qsAdjMat[key]
+HCQuotientSequencesStructure[qsStructure_][key_] := qsStructure[key]
 HCPGMatrices[pgMats_][key_] := pgMats[key]
 
 

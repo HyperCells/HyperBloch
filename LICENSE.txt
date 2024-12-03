@@ -1,6 +1,6 @@
 # CC BY-SA 4.0 LICENSE
 
-Copyright 2023 Patrick M. Lenggenhager
+Copyright 2023-2024 Patrick M. Lenggenhager
 
 Creative Commons Attribution-ShareAlike 4.0 International Public
 License

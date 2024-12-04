@@ -22,7 +22,7 @@ ImportCellGraphString::usage = "ImportCellGraphString[\"string\"] imports a cell
 ImportModelGraphString::usage = "ImportModelGraphString[\"string\"] imports a model graph from a string and returns an HCModelGraph";
 ImportSupercellModelGraphString::usage = "ImportSupercellModelGraphString[\"string\"] imports a supercell model graph from a string and returns an HCSupercellModelGraph";
 ImportQuotientSequencesStructureString::usage = "ImportQuotientSequencesStructureString[\"string\"] import a quotient-sequences-structure adjacency matrix specifying normal subgroup relations of translation groups from a string and returns a HCQuotientSequencesStructure";
-ImportPGMatricesString::usage = "ImportPGMatricesString[\"string\"] imports a collection of point-group matrices and corresponding properties from a string and returns HCPGMatrices";
+ImportPGMatricesString::usage = "ImportPGMatricesString[\"string\"] imports a collection of point-group matrices and corresponding properties from a string and returns an HCPGMatrices object";
 
 HCExampleData::usage = "HCExampleData[\"name\"] imports and returns the specified HCC/HCM/HCS/HCQS example file from \"PatrickMLenggenhager/HyperBloch/ExampleData/\".";
 

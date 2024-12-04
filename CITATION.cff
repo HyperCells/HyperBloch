@@ -1,0 +1,44 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: HyperBloch
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Patrick M.
+    family-names: Lenggenhager
+    email: plengg@pks.mpg.de
+    affiliation: >-
+      Max Planck Institute for the Physics of Complex      
+      Systems, Dresden, Germany
+    orcid: 'https://orcid.org/0000-0001-6746-1387'
+  - given-names: Joseph
+    family-names: Maciejko
+    email: maciejko@ualberta.ca
+    orcid: 'https://orcid.org/0000-0002-6946-1492'
+    affiliation: 'University of Alberta Edmonton, Canada'
+  - given-names: Tomáš
+    family-names: Bzdušek
+    email: tomas.bzdusek@uzh.ch
+    affiliation: 'University of Zurich, Zurich, Switzerland'
+    orcid: 'https://orcid.org/0000-0001-6904-5264'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.10222865
+    description: DOI for all versions of the software
+  - type: doi
+    value: 10.1103/PhysRevLett.131.226401
+    description: >-
+      Accompanying publication "Non-Abelian hyperbolic band
+      theory from supercells"
+repository-code: 'https://github.com/HyperCells/HyperBloch'
+url: 'https://www.hypercells.net'
+abstract: >-
+  A Mathematica package for hyperbolic tight-binding models
+  and the supercell method
+license: CC-BY-SA-4.0
+version: 1.0.0
+date-released: '2024-12-04'

@@ -28,6 +28,9 @@ authors:
     orcid: 'https://orcid.org/0000-0001-6904-5264'
 identifiers:
   - type: doi
+    value: 10.5281/zenodo.14274705
+    description: DOI for the latest release of the software
+  - type: doi
     value: 10.5281/zenodo.10222865
     description: DOI for all versions of the software
   - type: doi

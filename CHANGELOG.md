@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 i.e., quotients of normal subgroups of the triangle group and their relationships (@marcelolooser).
 - Add `HCPGMatrices` for importing and working with point-group matrices describing the
 action of symmetries on hyperbolic momenta (@marcelolooser).
+- Add `CITATION.cff` for easier citing of the software
 
 ### Changed
 - Update references, URLs etc. to reflect transfer of repository to HyperCells organization and new website https://www.hypercells.net.

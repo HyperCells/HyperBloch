@@ -4,7 +4,12 @@
 
 HyperBloch is a Mathematica package for constructing tight-binding models on
 hyperbolic lattices and calculating their band structures using the supercell
-method. It is based on
+method.
+
+:book: We have a new website with detailed [instructions on the installation](https://www.hypercells.net/contents/Installation/installation.html) process, a [getting-started guide](https://www.hypercells.net/contents/GettingStarted/getting_started.html) and hands-on [tutorials](https://www.hypercells.net/contents/Tutorials/tutorials.html): https://www.hypercells.net.
+
+An introduction to the underlying concepts can be found in the following publication
+
 > P. M. Lenggenhager, J. Maciejko, and T. Bzdušek,
   *Non-Abelian hyperbolic band theory from supercells*,
   [Phys. Rev. Lett. 131, 226401](https://doi.org/10.1103/PhysRevLett.131.226401) (2023)
@@ -22,11 +27,7 @@ addition to the package itself:
   supercell method*, [https://github.com/HyperCells/HyperBloch](https://github.com/HyperCells/HyperBloch),
   [10.5281/zenodo.10222865](https://doi.org/10.5281/zenodo.10222865) (2023)
 
-
-A getting-started guide for this and its sister package
-([HyperCells](https://github.com/HyperCells/HyperCells)) can be found
-[here](https://patrick-lenggenhager.github.io/software/2024/01/10/HyperGuide.html) and
-[this post](https://community.wolfram.com/groups/-/m/t/3131734) in the Wolfram
+This [post](https://community.wolfram.com/groups/-/m/t/3131734) in the Wolfram
 Community forum demonstrates some of the core functionality of the package.
 
 
@@ -34,14 +35,18 @@ Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) on how you can contribute to
 the development of this package.
 
   #### Table of Contents  
-- [Authors and developers](#authors-and-developers)
-- [Installation](#installation)
-- [Documentation](#documentation)
-- [Limitations](#limitations)
-- [HyperCells package](#hypercells-package)
-- [How to cite](#how-to-cite)
-- [Contact](#contact)
-- [License and copyright](#license-and-copyright)
+- [HyperBloch](#hyperbloch)
+      - [Table of Contents](#table-of-contents)
+  - [Authors and developers](#authors-and-developers)
+  - [Installation](#installation)
+    - [Dependencies](#dependencies)
+    - [HyperBloch](#hyperbloch-1)
+  - [Documentation](#documentation)
+  - [Limitations](#limitations)
+  - [HyperCells package](#hypercells-package)
+  - [How to cite](#how-to-cite)
+  - [Contact](#contact)
+  - [License and copyright](#license-and-copyright)
 
 ## Authors and developers
 
@@ -53,6 +58,9 @@ Main developer:\
 Coauthors:\
 &ensp;&ensp;**Joseph Maciejko** (maciejko@ualberta.ca)\
 &ensp;&ensp;**Tomáš Bzdušek** (tomas.bzdusek@uzh.ch)
+
+Code contributers:\
+&ensp;&ensp;**Marcelo Looser** (marcelo.looser@outlook.com)
 
 ## Installation
 
@@ -66,10 +74,10 @@ Please check the installation instructions there.
 
 In the future, HyperBloch will be submitted to the
 [Wolfram Language Paclet Repository](https://resources.wolframcloud.com/PacletRepository/).
-Until then, it can be installed manually. For version 0.9.0, the following command
+Until then, it can be installed manually. For version 1.0.0, the following command
 can be used:
 ```Mathematica
-PacletInstall["https://github.com/HyperCells/HyperBloch/releases/download/v0.9.0/PatrickMLenggenhager__HyperBloch-0.9.0.paclet"]
+PacletInstall["https://github.com/HyperCells/HyperBloch/releases/download/v1.0.0/PatrickMLenggenhager__HyperBloch-1.0.0.paclet"]
 ```
 
 Alternatively, you can download the latest release (as a `.paclet` file) from
@@ -202,4 +210,4 @@ Under the following terms:
   No additional restrictions - You may not apply legal terms or technological
     measures that legally restrict others from doing anything the license permits.
 
-Copyright 2023 Patrick M. Lenggenhager
+&copy; 2023-2024 Patrick M. Lenggenhager

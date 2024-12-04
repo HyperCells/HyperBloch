@@ -137,7 +137,7 @@ Begin["`Private`"];
 
 
 (* print banner *)
-Print["HyperBloch - Version 0.9.1\nMain author: Patrick M. Lenggenhager\n\nThis package loads the following dependencies:\n\t- L2Primitives by Srdjan Vukmirovic\n\t- NCAlgebra by J. William Helton and Mauricio de Oliveira"];
+Print["HyperBloch - Version 1.0.0\nMain author: Patrick M. Lenggenhager\n\nThis package loads the following dependencies:\n\t- L2Primitives by Srdjan Vukmirovic\n\t- NCAlgebra by J. William Helton and Mauricio de Oliveira"];
 
 
 Needs["PatrickMLenggenhager`HyperBloch`L2Primitives`"];

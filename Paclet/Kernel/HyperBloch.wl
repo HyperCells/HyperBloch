@@ -69,6 +69,7 @@ ComputeVertexCoordinates;
 
 RasterizeGraphics;
 NumberOfGenerations;
+DuplicateThreshold;
 DiskCenter;
 ColorFill;
 ColorBoundary;
@@ -1187,17 +1188,17 @@ IntroduceDisclination[mgraph_HCModelGraph|mgraph_HCSupercellModelGraph, FrankAng
 ]]
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Graphical Visualization*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*Triangle Tessellations*)
 
 
 (* Tomas' code *)
 ClearAll[GetTriangleTessellation];
-Options[GetTriangleTessellation]={ColorBoundary->RGBColor[{0,0,0,0}],ColorFill->LightGray,LineThickness->0};
+Options[GetTriangleTessellation]={ColorBoundary->RGBColor[{0,0,0,0}],ColorFill->LightGray,LineThickness->0,DuplicateThreshold->10^-14};
 (* Specify (p,q,r) of the triangle group \[CapitalDelta](p,q,r). *)
 (* The p-fold symmetric point is placed at the center, and *)
 (* the q-fold symmetric point is placed on the horizontal axis. *)
@@ -1234,10 +1235,10 @@ cc=1;
 temp0=TriangleList[[1]];
 For[aa=1,aa<p,aa++,
 temp1=Chop@L2Rotation[P,aa*(2*Pi/p)][temp0];
-TriangleList=AppendTo[TriangleList,temp1];
+AppendTo[TriangleList,temp1];
 ];
 
-TriangleLength=AppendTo[TriangleLength,Length[TriangleList]];
+AppendTo[TriangleLength,Length[TriangleList]];
 
 (* All subsequent iterations of the algorithm. *)
 For[cc=2,cc<Generations+1,cc++,
@@ -1246,15 +1247,15 @@ For[bb=TriangleLength[[cc-1]]+1,bb<TriangleLength[[cc]]+1,bb++,
 temp1=TriangleList[[bb]];
 For[aa=1,aa<p,aa++,
 temp2=Chop@L2Rotation[temp1[[1,1]],aa*(2*Pi/p)][temp1];
-TriangleList=AppendTo[TriangleList,temp2]
+AppendTo[TriangleList,temp2]
 ];
 For[aa=1,aa<q,aa++,
 temp2=Chop@L2Rotation[temp1[[1,2]],aa*(2*Pi/q)][temp1];
-TriangleList=AppendTo[TriangleList,temp2]
+AppendTo[TriangleList,temp2]
 ];
 For[aa=1,aa<r,aa++,
 temp2=Chop@L2Rotation[temp1[[1,3]],aa*(2*Pi/r)][temp1];
-TriangleList=AppendTo[TriangleList,temp2]
+AppendTo[TriangleList,temp2]
 ];
 ];
 
@@ -1269,21 +1270,23 @@ Break[];
 ];
 ];
 
-TriangleLength=AppendTo[TriangleLength,Length[TriangleList]];
+AppendTo[TriangleLength,Length[TriangleList]];
 ];
-
-
 
 (* All triangles have been generated. The remainder of *)
 (* the code has to do with simple data manipulation and plotting. *)
 
+(* Delete duplicates *)
+TriangleList = DeleteDuplicates[TriangleList,Norm[#1[[1,;;,1]]-#2[[1,;;,1]]] < OptionValue[DuplicateThreshold] &];
+
+(* Extract the boundaries *)
 boundaries = Graphics[{ColorBoundary,Thickness[LineThickness],LToGraphics[{Flatten@TriangleList}, Model->PoincareDisk]}];
 
 ToFill=Table[LPolygon[{
 TriangleList[[aa,1,1]],
 TriangleList[[aa,1,2]],
 TriangleList[[aa,1,3]]
-}],{aa,1,TriangleLength[[-1]]}];
+}],{aa,1,Length@TriangleList}];
 
 triangles= Graphics[{ColorFill,LToGraphics[{Flatten@ToFill}, Model->PoincareDisk]}];
 

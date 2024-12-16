@@ -743,7 +743,7 @@ IntroduceDisclination[mgraph_HCModelGraph|mgraph_HCSupercellModelGraph, FrankAng
 	 {i, Length[faces]}]; (* facesstr is a misnomer ("inherited") *)
 	
 	(* Check if the model graph describes a Lieb lattice: *)
-	IsLieb = Length[edgesOld[[1, 3, Sequence@@cellIdx, 2]]] == 0;
+	IsLieb = (Length[edgesOld[[1, 3, Sequence@@cellIdx, 2]]] == 0);
 	tagIndices = If[IsLieb, {{3, 2}, {3, 2}}, {{3, 2, 2}, {3, 2, 3}}]; (* indices for tagging edges (for the glueing procedure) *)
 	
 	(* --------------------------------------------------- *)

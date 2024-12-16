@@ -74,10 +74,10 @@ Please check the installation instructions there.
 
 In the future, HyperBloch will be submitted to the
 [Wolfram Language Paclet Repository](https://resources.wolframcloud.com/PacletRepository/).
-Until then, it can be installed manually. For version 1.0.0, the following command
+Until then, it can be installed manually. For version 1.0.1, the following command
 can be used:
 ```Mathematica
-PacletInstall["https://github.com/HyperCells/HyperBloch/releases/download/v1.0.0/PatrickMLenggenhager__HyperBloch-1.0.0.paclet"]
+PacletInstall["https://github.com/HyperCells/HyperBloch/releases/download/v1.0.1/PatrickMLenggenhager__HyperBloch-1.0.1.paclet"]
 ```
 
 Alternatively, you can download the latest release (as a `.paclet` file) from

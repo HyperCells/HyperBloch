@@ -64,8 +64,12 @@ TBHamiltonian::usage = "TBHamiltonian[mgraph, norb, onsite, hoppings] or TBHamil
 NonReciprocalTBHamiltonian::usage = "NonReciprocalTBHamiltonian[mgraph, norb, onsite, hoppingsCanonical, hoppingsOpposite] or NonReciprocalTBHamiltonian[mgraph, HCPCmgraph, norb, onsite, hoppingsCanonicalPC, hoppingsOppositePC, hoppingsCanonicalGluedEdges, hoppingsOppositeGluedEdges] constructs the non-reciprocal tight-binding Hamiltonian H of the HCModelGraph, HCSupercellModelGraph or HBDisclinationModelGraph, HBDisclinationSupercellModelGraph mgraph, respectively. The number of orbitals at each site specified by norb, the onsite term by onsite, and the hopping along an edge and possibly a glued edge in the canonical or opposite direction by hoppingsCanonical, hoppingsOpposite or hoppingsCanonicalPC, hoppingsOppositePC and hoppingsCanonicalGluedEdges or hoppingsOppositeGluedEdges, respectively.";
 
 
+ImportElements;
+ComputeVertexCoordinates;
+
 RasterizeGraphics;
 NumberOfGenerations;
+DuplicateThreshold;
 DiskCenter;
 ColorFill;
 ColorBoundary;
@@ -137,7 +141,7 @@ Begin["`Private`"];
 
 
 (* print banner *)
-Print["HyperBloch - Version 1.0.0\nMain author: Patrick M. Lenggenhager\n\nThis package loads the following dependencies:\n\t- L2Primitives by Srdjan Vukmirovic\n\t- NCAlgebra by J. William Helton and Mauricio de Oliveira"];
+Print["HyperBloch - Version 1.0.1\nMain author: Patrick M. Lenggenhager\n\nThis package loads the following dependencies:\n\t- L2Primitives by Srdjan Vukmirovic\n\t- NCAlgebra by J. William Helton and Mauricio de Oliveira"];
 
 
 Needs["PatrickMLenggenhager`HyperBloch`L2Primitives`"];
@@ -412,11 +416,18 @@ ImportModelGraphString[str_]:=Module[{
 (*Import of Supercell Model Graphs*)
 
 
-ImportSupercellModelGraphString[str_]:=Module[{
+Options[ImportSupercellModelGraphString] = {
+	ImportElements -> {"Graph", "UndirectedGraph", "FullGraph", "VertexLabels", "SchwarzTriangleLabels", "EdgeTranslations", "TranslationGroupEmbedding", "InternalSupercellTranslations", "Faces", "FaceEdges"},
+	ComputeVertexCoordinates -> True	
+};
+ImportSupercellModelGraphString[str_, OptionsPattern[]]:=Module[{
+		elements,
 		version, tg, specs, \[CapitalGamma]0gens, TD\[CapitalGamma]0, TG0Gw, \[CapitalGamma]gens, \[CapitalGamma]\[CapitalGamma]0, T\[CapitalGamma]0\[CapitalGamma], TD\[CapitalGamma], TGGw,
 		model, vertices, vertexpos, edges, etransls, facesstr,
 		rels0, rels, center, vlbls, vcoords, graph, faces, faceedges
 	},
+	(* elements to import *)
+	elements = DeleteDuplicates@Join[{"TriangleGroup", "CellCenter", "PCGenus", "Genus", "PCTranslationGenerators", "TranslationGenerators"}, OptionValue[ImportElements]];
 	
 	If[StringStartsQ[str, "HyperCells"],
 		{version, tg, specs, \[CapitalGamma]0gens, TD\[CapitalGamma]0, TG0Gw, \[CapitalGamma]gens, \[CapitalGamma]\[CapitalGamma]0, T\[CapitalGamma]0\[CapitalGamma], TD\[CapitalGamma], TGGw, model, vertices, vertexpos, edges, etransls, facesstr} =
@@ -436,56 +447,80 @@ ImportSupercellModelGraphString[str_]:=Module[{
 	
 	(* algebra *)
 	\[CapitalGamma]0gens = "(" <> # <> ")" &/@(AssociationThread@@(StringTrim[StringSplit[StringTrim[#, {"{", "}"}], ","], " "]&/@StringSplit[\[CapitalGamma]0gens, " -> "]));
-	TD\[CapitalGamma]0 = StringTrim[StringSplit[StringTrim[TD\[CapitalGamma]0, {"{", "}"}], ","], " "];
 	\[CapitalGamma]gens = "(" <> # <> ")" &/@(AssociationThread@@(StringTrim[StringSplit[StringTrim[#, {"{", "}"}], ","], " "]&/@StringSplit[\[CapitalGamma]gens, " -> "]));
-	\[CapitalGamma]\[CapitalGamma]0 = "(" <> # <> ")" &/@(AssociationThread@@(StringTrim[StringSplit[StringTrim[#, {"{", "}"}], ","], " "]&/@StringSplit[\[CapitalGamma]\[CapitalGamma]0, " -> "]));
-	T\[CapitalGamma]0\[CapitalGamma] = StringTrim[StringSplit[StringTrim[T\[CapitalGamma]0\[CapitalGamma], {"{", "}"}], ","], " "];
-	TD\[CapitalGamma] = StringTrim[StringSplit[StringTrim[TD\[CapitalGamma], {"{", "}"}], ","], " "];
+	(*TD\[CapitalGamma]0 = StringTrim[StringSplit[StringTrim[TD\[CapitalGamma]0, {"{", "}"}], ","], " "];*)
+	\[CapitalGamma]\[CapitalGamma]0 = If[MemberQ[elements, "TranslationGroupEmbedding"],
+		"(" <> # <> ")" &/@(AssociationThread@@(StringTrim[StringSplit[StringTrim[#, {"{", "}"}], ","], " "]&/@StringSplit[\[CapitalGamma]\[CapitalGamma]0, " -> "])),
+		None];
+	T\[CapitalGamma]0\[CapitalGamma] = If[MemberQ[elements, "InternalSupercellTranslations"],
+		StringTrim[StringSplit[StringTrim[T\[CapitalGamma]0\[CapitalGamma], {"{", "}"}], ","], " "],
+		None];
+	TD\[CapitalGamma] = If[MemberQ[elements, "SchwarzTriangleLabels"],
+		StringTrim[StringSplit[StringTrim[TD\[CapitalGamma], {"{", "}"}], ","], " "],
+		None];
 	
 	(* graph *)
-	vertices = ToExpression@vertices;
-	vertexpos = StringTrim[StringSplit[StringTrim[vertexpos, {"{", "}"}], ","], " "];
-	edges = DirectedEdge[vertices[[#1]], vertices[[#2]], #3]&@@@ToExpression[edges];
-	faces = Table[
-		Graph[
+	If[ContainsAny[elements, {"Graph", "UndirectedGraph", "FullGraph", "Faces", "FaceEdges"}],
+		vertices = ToExpression@vertices;
+		edges = DirectedEdge[vertices[[#1]], vertices[[#2]], #3]&@@@ToExpression[edges];
+		faces = If[MemberQ[elements, "Faces"],
 			Table[
-				If[e[[2]] == 1,
-					edges[[e[[1]]]],
-					DirectedEdge[edges[[e[[1]], 2]], edges[[e[[1]], 1]], -edges[[e[[1]], 3]]]
+				Graph[
+					Table[
+						If[e[[2]] == 1,
+							edges[[e[[1]]]],
+							DirectedEdge[edges[[e[[1]], 2]], edges[[e[[1]], 1]], -edges[[e[[1]], 3]]]
+						],
+						{e, face}
+					]
 				],
-				{e, face}
-			]
-		],
-		{face, ToExpression[facesstr]}
+				{face, ToExpression[facesstr]}
+			], None];
+		faceedges = If[MemberQ[elements, "FaceEdges"],
+			Map[edges[[#[[1]]]]&, ToExpression[facesstr], {2}],
+			None];,
+		vertices = None;
+		edges = None;
+		faces = None;
+		faceedges = None;
 	];
-	faceedges = Map[edges[[#[[1]]]]&, ToExpression[facesstr], {2}];
 	
 	(* vertex labels and coordinates *)
-	vlbls = vertexpos;(*(StringSplit[StringTrim[#, {"{ ", " }"}], ", "]&/@StringSplit[StringTrim[TGGw, {"{ ", " }"}], " }, { "])[[#[[1]], #[[2]]]]&/@vertices;	*)
-	vcoords = Table[
-		LToGraphics[GetSitePosition[tg, vertices[[i,1]], vlbls[[i]], DiskCenter -> center], Model->PoincareDisk][[1]],
-		{i, Length[vertices]}
-	];
+	vlbls = If[MemberQ[elements, "VertexLabels"]||(OptionValue[ComputeVertexCoordinates] && ContainsAny[elements, {"Graph", "UndirectedGraph", "FullGraph"}]), StringTrim[StringSplit[StringTrim[vertexpos, {"{", "}"}], ","], " "], None];
+	(*(StringSplit[StringTrim[#, {"{ ", " }"}], ", "]&/@StringSplit[StringTrim[TGGw, {"{ ", " }"}], " }, { "])[[#[[1]], #[[2]]]]&/@vertices;	*)
+	vcoords = If[OptionValue[ComputeVertexCoordinates] && ContainsAny[elements, {"Graph", "UndirectedGraph", "FullGraph"}],
+		Table[
+			LToGraphics[GetSitePosition[tg, vertices[[i,1]], vlbls[[i]], DiskCenter -> center], Model->PoincareDisk][[1]],
+			{i, Length[vertices]}
+		],
+		None];
 	
 	(* edge translations *)
-	etransls = StringTrim[StringSplit[StringTrim[etransls,{"{", "}"}], ","], " "];
+	etransls = If[MemberQ[elements, "EdgeTranslations"],
+		StringTrim[StringSplit[StringTrim[etransls,{"{", "}"}], ","], " "],
+		None];
 	
 	(* graph *)
-	graph = Graph[vertices, edges, VertexCoordinates -> vcoords];
+	graph = If[ContainsAny[elements, {"Graph", "UndirectedGraph", "FullGraph"}],
+		If[OptionValue[ComputeVertexCoordinates],
+			Graph[vertices, edges, VertexCoordinates -> vcoords],
+			Graph[vertices, edges]
+		],
+		None];
 	
 	HCSupercellModelGraph[<|
 		"TriangleGroup" -> tg,
 		"CellCenter" -> center,
 		"PCGenus" -> Length[\[CapitalGamma]0gens]/2,
 		"Genus" -> Length[\[CapitalGamma]gens]/2,
-		"Graph" -> graph,
-		"UndirectedGraph"->GetUndirectedGraph@graph,
-		"FullGraph" -> GetFullGraph@graph,
+		"PCTranslationGenerators" -> \[CapitalGamma]0gens,
+		"TranslationGenerators" -> \[CapitalGamma]gens,
+		"Graph" -> If[MemberQ[elements, "Graph"], graph, None],
+		"UndirectedGraph"-> If[MemberQ[elements, "UndirectedGraph"], GetUndirectedGraph@graph, None],
+		"FullGraph" -> If[MemberQ[elements, "FullGraph"], GetFullGraph@graph, None],
 		"VertexLabels" -> vlbls,
 		"SchwarzTriangleLabels" -> TD\[CapitalGamma],
 		"EdgeTranslations" -> etransls,
-		"PCTranslationGenerators" -> \[CapitalGamma]0gens,
-		"TranslationGenerators" -> \[CapitalGamma]gens,
 		"TranslationGroupEmbedding" -> \[CapitalGamma]\[CapitalGamma]0,
 		"InternalSupercellTranslations" -> T\[CapitalGamma]0\[CapitalGamma],
 		"Faces" -> faces,
@@ -708,7 +743,7 @@ IntroduceDisclination[mgraph_HCModelGraph|mgraph_HCSupercellModelGraph, FrankAng
 	 {i, Length[faces]}]; (* facesstr is a misnomer ("inherited") *)
 	
 	(* Check if the model graph describes a Lieb lattice: *)
-	IsLieb = Length[edgesOld[[1, 3, Sequence@@cellIdx, 2]]] == 0;
+	IsLieb = (Length[edgesOld[[1, 3, Sequence@@cellIdx, 2]]] == 0);
 	tagIndices = If[IsLieb, {{3, 2}, {3, 2}}, {{3, 2, 2}, {3, 2, 3}}]; (* indices for tagging edges (for the glueing procedure) *)
 	
 	(* --------------------------------------------------- *)
@@ -1153,17 +1188,17 @@ IntroduceDisclination[mgraph_HCModelGraph|mgraph_HCSupercellModelGraph, FrankAng
 ]]
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Graphical Visualization*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*Triangle Tessellations*)
 
 
 (* Tomas' code *)
 ClearAll[GetTriangleTessellation];
-Options[GetTriangleTessellation]={ColorBoundary->RGBColor[{0,0,0,0}],ColorFill->LightGray,LineThickness->0};
+Options[GetTriangleTessellation]={ColorBoundary->RGBColor[{0,0,0,0}],ColorFill->LightGray,LineThickness->0,DuplicateThreshold->10^-14};
 (* Specify (p,q,r) of the triangle group \[CapitalDelta](p,q,r). *)
 (* The p-fold symmetric point is placed at the center, and *)
 (* the q-fold symmetric point is placed on the horizontal axis. *)
@@ -1200,10 +1235,10 @@ cc=1;
 temp0=TriangleList[[1]];
 For[aa=1,aa<p,aa++,
 temp1=Chop@L2Rotation[P,aa*(2*Pi/p)][temp0];
-TriangleList=AppendTo[TriangleList,temp1];
+AppendTo[TriangleList,temp1];
 ];
 
-TriangleLength=AppendTo[TriangleLength,Length[TriangleList]];
+AppendTo[TriangleLength,Length[TriangleList]];
 
 (* All subsequent iterations of the algorithm. *)
 For[cc=2,cc<Generations+1,cc++,
@@ -1212,15 +1247,15 @@ For[bb=TriangleLength[[cc-1]]+1,bb<TriangleLength[[cc]]+1,bb++,
 temp1=TriangleList[[bb]];
 For[aa=1,aa<p,aa++,
 temp2=Chop@L2Rotation[temp1[[1,1]],aa*(2*Pi/p)][temp1];
-TriangleList=AppendTo[TriangleList,temp2]
+AppendTo[TriangleList,temp2]
 ];
 For[aa=1,aa<q,aa++,
 temp2=Chop@L2Rotation[temp1[[1,2]],aa*(2*Pi/q)][temp1];
-TriangleList=AppendTo[TriangleList,temp2]
+AppendTo[TriangleList,temp2]
 ];
 For[aa=1,aa<r,aa++,
 temp2=Chop@L2Rotation[temp1[[1,3]],aa*(2*Pi/r)][temp1];
-TriangleList=AppendTo[TriangleList,temp2]
+AppendTo[TriangleList,temp2]
 ];
 ];
 
@@ -1235,21 +1270,23 @@ Break[];
 ];
 ];
 
-TriangleLength=AppendTo[TriangleLength,Length[TriangleList]];
+AppendTo[TriangleLength,Length[TriangleList]];
 ];
-
-
 
 (* All triangles have been generated. The remainder of *)
 (* the code has to do with simple data manipulation and plotting. *)
 
+(* Delete duplicates *)
+TriangleList = DeleteDuplicates[TriangleList,Norm[#1[[1,;;,1]]-#2[[1,;;,1]]] < OptionValue[DuplicateThreshold] &];
+
+(* Extract the boundaries *)
 boundaries = Graphics[{ColorBoundary,Thickness[LineThickness],LToGraphics[{Flatten@TriangleList}, Model->PoincareDisk]}];
 
 ToFill=Table[LPolygon[{
 TriangleList[[aa,1,1]],
 TriangleList[[aa,1,2]],
 TriangleList[[aa,1,3]]
-}],{aa,1,TriangleLength[[-1]]}];
+}],{aa,1,Length@TriangleList}];
 
 triangles= Graphics[{ColorFill,LToGraphics[{Flatten@ToFill}, Model->PoincareDisk]}];
 
@@ -2084,22 +2121,24 @@ Module[{dimk, verts, Nverts, edges, htest, Hexpr, PCVertex, PCEdge, H, assumptio
 	];
 	
 	H = If[norb === 1,
-		MakeHermitian@Total[SparseArray[{
-			{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> hoppings[PCEdge@#1]#2
-		}, Nverts]&@@@edges] + Total[SparseArray[{
-			{Position[verts, #][[1, 1]], Position[verts, #][[1, 1]]} -> onsite[PCVertex@#]
-		}, Nverts]&/@verts],
-		MakeHermitian@Total[SparseArray`SparseBlockMatrix[Join[
-			{{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> hoppings[PCEdge@#1]#2},
+		MakeHermitian@SparseArray[
+			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> hoppings[PCEdge@#1]#2)&@@@edges,
+		Nverts] + SparseArray[
+			({Position[verts, #][[1, 1]], Position[verts, #][[1, 1]]} -> onsite[PCVertex@#])&/@verts,
+		Nverts],
+		MakeHermitian@SparseArray`SparseBlockMatrix[Join[
+			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> hoppings[PCEdge@#1]#2)&@@@edges,
 			Table[{i, i} -> ZeroMatrix[norb[PCVertex@verts[[i]]]], {i, 1, Length@verts}]
-		]]&@@@edges] + SparseArray`SparseBlockMatrix[
+		]] + SparseArray`SparseBlockMatrix[
 			{Position[verts, #][[1, 1]], Position[verts, #][[1, 1]]} -> onsite[PCVertex@#]&/@verts
 		]
 	];
 	assumptions = And@@Table[k[i]\[Element]Reals, {i, 1, dimk}];
-	H = Map[Simplify[#, assumptions]&, H, {2}];
 	
-	If[OptionValue[ReturnSparseArray], SparseArray@H, Normal@H]
+	If[OptionValue[ReturnSparseArray],
+		Map[Simplify[#, assumptions]&, H, {2}],
+		Simplify[Normal@H, assumptions]
+	]
 ]
 
 
@@ -2184,27 +2223,29 @@ Module[{dimk, verts, Nverts, edges, htest, Hexpr, PCVertex, PCEdge, H, assumptio
 	];
 	
 	H = If[norb === 1,
-		Total[Normal@SparseArray[{
-			{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> hoppingsCanonical[PCEdge@#1]#2
-		}, Nverts]&@@@edges] + ConjugateTranspose@Total[Normal@SparseArray[{
-			{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> Conjugate@hoppingsOpposite[PCEdge@#1]#2
-		}, Nverts]&@@@edges] + Total[Normal@SparseArray[{
-			{Position[verts, #][[1, 1]], Position[verts, #][[1, 1]]} -> onsite[PCVertex@#]
-		}, Nverts]&/@verts],
-		Total[Normal@SparseArray`SparseBlockMatrix[Join[
-			{{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> hoppingsCanonical[PCEdge@#1]#2},
+		SparseArray[
+			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> hoppingsCanonical[PCEdge@#1]#2)&@@@edges,
+		Nverts] + ConjugateTranspose@SparseArray[
+			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> Conjugate@hoppingsOpposite[PCEdge@#1]#2)&@@@edges,
+		Nverts] + SparseArray[
+			({Position[verts, #][[1, 1]], Position[verts, #][[1, 1]]} -> onsite[PCVertex@#])&/@verts,
+		Nverts],
+		SparseArray`SparseBlockMatrix[Join[
+			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> hoppingsCanonical[PCEdge@#1]#2)&@@@edges,
 			Table[{i, i} -> ZeroMatrix[norb[PCVertex@verts[[i]]]], {i, 1, Length@verts}]
-		]]&@@@edges] + ConjugateTranspose@Total[Normal@SparseArray`SparseBlockMatrix[Join[
-			{{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> Conjugate@hoppingsOpposite[PCEdge@#1]#2},
+		]] + ConjugateTranspose@SparseArray`SparseBlockMatrix[Join[
+			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> Conjugate@hoppingsOpposite[PCEdge@#1]#2)&@@@edges,
 			Table[{i, i} -> ZeroMatrix[norb[PCVertex@verts[[i]]]], {i, 1, Length@verts}]
-		]]&@@@edges] + Normal@SparseArray`SparseBlockMatrix[
+		]] + SparseArray`SparseBlockMatrix[
 			{Position[verts, #][[1, 1]], Position[verts, #][[1, 1]]} -> onsite[PCVertex@#]&/@verts
 		]
 	];
 	assumptions = And@@Table[k[i]\[Element]Reals, {i, 1, dimk}];
-	H = Map[Simplify[#, assumptions]&, H, {2}];
 	
-	If[OptionValue[ReturnSparseArray], SparseArray@H, Normal@H]
+	If[OptionValue[ReturnSparseArray],
+		Map[Simplify[#, assumptions]&, H, {2}],
+		Simplify[Normal@H, assumptions]
+	]
 ]
 
 

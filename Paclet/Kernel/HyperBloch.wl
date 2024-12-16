@@ -2118,22 +2118,24 @@ Module[{dimk, verts, Nverts, edges, htest, Hexpr, PCVertex, PCEdge, H, assumptio
 	];
 	
 	H = If[norb === 1,
-		MakeHermitian@Total[SparseArray[{
-			{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> hoppings[PCEdge@#1]#2
-		}, Nverts]&@@@edges] + Total[SparseArray[{
-			{Position[verts, #][[1, 1]], Position[verts, #][[1, 1]]} -> onsite[PCVertex@#]
-		}, Nverts]&/@verts],
-		MakeHermitian@Total[SparseArray`SparseBlockMatrix[Join[
-			{{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> hoppings[PCEdge@#1]#2},
+		MakeHermitian@SparseArray[
+			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> hoppings[PCEdge@#1]#2)&@@@edges,
+		Nverts] + SparseArray[
+			({Position[verts, #][[1, 1]], Position[verts, #][[1, 1]]} -> onsite[PCVertex@#])&/@verts,
+		Nverts],
+		MakeHermitian@SparseArray`SparseBlockMatrix[Join[
+			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> hoppings[PCEdge@#1]#2)&@@@edges,
 			Table[{i, i} -> ZeroMatrix[norb[PCVertex@verts[[i]]]], {i, 1, Length@verts}]
-		]]&@@@edges] + SparseArray`SparseBlockMatrix[
+		]] + SparseArray`SparseBlockMatrix[
 			{Position[verts, #][[1, 1]], Position[verts, #][[1, 1]]} -> onsite[PCVertex@#]&/@verts
 		]
 	];
 	assumptions = And@@Table[k[i]\[Element]Reals, {i, 1, dimk}];
-	H = Map[Simplify[#, assumptions]&, H, {2}];
 	
-	If[OptionValue[ReturnSparseArray], SparseArray@H, Normal@H]
+	If[OptionValue[ReturnSparseArray],
+		Map[Simplify[#, assumptions]&, H, {2}],
+		Simplify[Normal@H, assumptions]
+	]
 ]
 
 
@@ -2218,27 +2220,29 @@ Module[{dimk, verts, Nverts, edges, htest, Hexpr, PCVertex, PCEdge, H, assumptio
 	];
 	
 	H = If[norb === 1,
-		Total[Normal@SparseArray[{
-			{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> hoppingsCanonical[PCEdge@#1]#2
-		}, Nverts]&@@@edges] + ConjugateTranspose@Total[Normal@SparseArray[{
-			{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> Conjugate@hoppingsOpposite[PCEdge@#1]#2
-		}, Nverts]&@@@edges] + Total[Normal@SparseArray[{
-			{Position[verts, #][[1, 1]], Position[verts, #][[1, 1]]} -> onsite[PCVertex@#]
-		}, Nverts]&/@verts],
-		Total[Normal@SparseArray`SparseBlockMatrix[Join[
-			{{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> hoppingsCanonical[PCEdge@#1]#2},
+		SparseArray[
+			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> hoppingsCanonical[PCEdge@#1]#2)&@@@edges,
+		Nverts] + ConjugateTranspose@SparseArray[
+			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> Conjugate@hoppingsOpposite[PCEdge@#1]#2)&@@@edges,
+		Nverts] + SparseArray[
+			({Position[verts, #][[1, 1]], Position[verts, #][[1, 1]]} -> onsite[PCVertex@#])&/@verts,
+		Nverts],
+		SparseArray`SparseBlockMatrix[Join[
+			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> hoppingsCanonical[PCEdge@#1]#2)&@@@edges,
 			Table[{i, i} -> ZeroMatrix[norb[PCVertex@verts[[i]]]], {i, 1, Length@verts}]
-		]]&@@@edges] + ConjugateTranspose@Total[Normal@SparseArray`SparseBlockMatrix[Join[
-			{{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> Conjugate@hoppingsOpposite[PCEdge@#1]#2},
+		]] + ConjugateTranspose@SparseArray`SparseBlockMatrix[Join[
+			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> Conjugate@hoppingsOpposite[PCEdge@#1]#2)&@@@edges,
 			Table[{i, i} -> ZeroMatrix[norb[PCVertex@verts[[i]]]], {i, 1, Length@verts}]
-		]]&@@@edges] + Normal@SparseArray`SparseBlockMatrix[
+		]] + SparseArray`SparseBlockMatrix[
 			{Position[verts, #][[1, 1]], Position[verts, #][[1, 1]]} -> onsite[PCVertex@#]&/@verts
 		]
 	];
 	assumptions = And@@Table[k[i]\[Element]Reals, {i, 1, dimk}];
-	H = Map[Simplify[#, assumptions]&, H, {2}];
 	
-	If[OptionValue[ReturnSparseArray], SparseArray@H, Normal@H]
+	If[OptionValue[ReturnSparseArray],
+		Map[Simplify[#, assumptions]&, H, {2}],
+		Simplify[Normal@H, assumptions]
+	]
 ]
 
 

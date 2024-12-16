@@ -64,6 +64,9 @@ TBHamiltonian::usage = "TBHamiltonian[mgraph, norb, onsite, hoppings] or TBHamil
 NonReciprocalTBHamiltonian::usage = "NonReciprocalTBHamiltonian[mgraph, norb, onsite, hoppingsCanonical, hoppingsOpposite] or NonReciprocalTBHamiltonian[mgraph, HCPCmgraph, norb, onsite, hoppingsCanonicalPC, hoppingsOppositePC, hoppingsCanonicalGluedEdges, hoppingsOppositeGluedEdges] constructs the non-reciprocal tight-binding Hamiltonian H of the HCModelGraph, HCSupercellModelGraph or HBDisclinationModelGraph, HBDisclinationSupercellModelGraph mgraph, respectively. The number of orbitals at each site specified by norb, the onsite term by onsite, and the hopping along an edge and possibly a glued edge in the canonical or opposite direction by hoppingsCanonical, hoppingsOpposite or hoppingsCanonicalPC, hoppingsOppositePC and hoppingsCanonicalGluedEdges or hoppingsOppositeGluedEdges, respectively.";
 
 
+ImportElements;
+ComputeVertexCoordinates;
+
 RasterizeGraphics;
 NumberOfGenerations;
 DiskCenter;
@@ -137,7 +140,7 @@ Begin["`Private`"];
 
 
 (* print banner *)
-Print["HyperBloch - Version 1.0.0\nMain author: Patrick M. Lenggenhager\n\nThis package loads the following dependencies:\n\t- L2Primitives by Srdjan Vukmirovic\n\t- NCAlgebra by J. William Helton and Mauricio de Oliveira"];
+Print["HyperBloch - Version 1.0.1\nMain author: Patrick M. Lenggenhager\n\nThis package loads the following dependencies:\n\t- L2Primitives by Srdjan Vukmirovic\n\t- NCAlgebra by J. William Helton and Mauricio de Oliveira"];
 
 
 Needs["PatrickMLenggenhager`HyperBloch`L2Primitives`"];
@@ -412,11 +415,18 @@ ImportModelGraphString[str_]:=Module[{
 (*Import of Supercell Model Graphs*)
 
 
-ImportSupercellModelGraphString[str_]:=Module[{
+Options[ImportSupercellModelGraphString] = {
+	ImportElements -> {"Graph", "UndirectedGraph", "FullGraph", "VertexLabels", "SchwarzTriangleLabels", "EdgeTranslations", "TranslationGroupEmbedding", "InternalSupercellTranslations", "Faces", "FaceEdges"},
+	ComputeVertexCoordinates -> True	
+};
+ImportSupercellModelGraphString[str_, OptionsPattern[]]:=Module[{
+		elements,
 		version, tg, specs, \[CapitalGamma]0gens, TD\[CapitalGamma]0, TG0Gw, \[CapitalGamma]gens, \[CapitalGamma]\[CapitalGamma]0, T\[CapitalGamma]0\[CapitalGamma], TD\[CapitalGamma], TGGw,
 		model, vertices, vertexpos, edges, etransls, facesstr,
 		rels0, rels, center, vlbls, vcoords, graph, faces, faceedges
 	},
+	(* elements to import *)
+	elements = DeleteDuplicates@Join[{"TriangleGroup", "CellCenter", "PCGenus", "Genus", "PCTranslationGenerators", "TranslationGenerators"}, OptionValue[ImportElements]];
 	
 	If[StringStartsQ[str, "HyperCells"],
 		{version, tg, specs, \[CapitalGamma]0gens, TD\[CapitalGamma]0, TG0Gw, \[CapitalGamma]gens, \[CapitalGamma]\[CapitalGamma]0, T\[CapitalGamma]0\[CapitalGamma], TD\[CapitalGamma], TGGw, model, vertices, vertexpos, edges, etransls, facesstr} =
@@ -436,56 +446,80 @@ ImportSupercellModelGraphString[str_]:=Module[{
 	
 	(* algebra *)
 	\[CapitalGamma]0gens = "(" <> # <> ")" &/@(AssociationThread@@(StringTrim[StringSplit[StringTrim[#, {"{", "}"}], ","], " "]&/@StringSplit[\[CapitalGamma]0gens, " -> "]));
-	TD\[CapitalGamma]0 = StringTrim[StringSplit[StringTrim[TD\[CapitalGamma]0, {"{", "}"}], ","], " "];
 	\[CapitalGamma]gens = "(" <> # <> ")" &/@(AssociationThread@@(StringTrim[StringSplit[StringTrim[#, {"{", "}"}], ","], " "]&/@StringSplit[\[CapitalGamma]gens, " -> "]));
-	\[CapitalGamma]\[CapitalGamma]0 = "(" <> # <> ")" &/@(AssociationThread@@(StringTrim[StringSplit[StringTrim[#, {"{", "}"}], ","], " "]&/@StringSplit[\[CapitalGamma]\[CapitalGamma]0, " -> "]));
-	T\[CapitalGamma]0\[CapitalGamma] = StringTrim[StringSplit[StringTrim[T\[CapitalGamma]0\[CapitalGamma], {"{", "}"}], ","], " "];
-	TD\[CapitalGamma] = StringTrim[StringSplit[StringTrim[TD\[CapitalGamma], {"{", "}"}], ","], " "];
+	(*TD\[CapitalGamma]0 = StringTrim[StringSplit[StringTrim[TD\[CapitalGamma]0, {"{", "}"}], ","], " "];*)
+	\[CapitalGamma]\[CapitalGamma]0 = If[MemberQ[elements, "TranslationGroupEmbedding"],
+		"(" <> # <> ")" &/@(AssociationThread@@(StringTrim[StringSplit[StringTrim[#, {"{", "}"}], ","], " "]&/@StringSplit[\[CapitalGamma]\[CapitalGamma]0, " -> "])),
+		None];
+	T\[CapitalGamma]0\[CapitalGamma] = If[MemberQ[elements, "InternalSupercellTranslations"],
+		StringTrim[StringSplit[StringTrim[T\[CapitalGamma]0\[CapitalGamma], {"{", "}"}], ","], " "],
+		None];
+	TD\[CapitalGamma] = If[MemberQ[elements, "SchwarzTriangleLabels"],
+		StringTrim[StringSplit[StringTrim[TD\[CapitalGamma], {"{", "}"}], ","], " "],
+		None];
 	
 	(* graph *)
-	vertices = ToExpression@vertices;
-	vertexpos = StringTrim[StringSplit[StringTrim[vertexpos, {"{", "}"}], ","], " "];
-	edges = DirectedEdge[vertices[[#1]], vertices[[#2]], #3]&@@@ToExpression[edges];
-	faces = Table[
-		Graph[
+	If[ContainsAny[elements, {"Graph", "UndirectedGraph", "FullGraph", "Faces", "FaceEdges"}],
+		vertices = ToExpression@vertices;
+		edges = DirectedEdge[vertices[[#1]], vertices[[#2]], #3]&@@@ToExpression[edges];
+		faces = If[MemberQ[elements, "Faces"],
 			Table[
-				If[e[[2]] == 1,
-					edges[[e[[1]]]],
-					DirectedEdge[edges[[e[[1]], 2]], edges[[e[[1]], 1]], -edges[[e[[1]], 3]]]
+				Graph[
+					Table[
+						If[e[[2]] == 1,
+							edges[[e[[1]]]],
+							DirectedEdge[edges[[e[[1]], 2]], edges[[e[[1]], 1]], -edges[[e[[1]], 3]]]
+						],
+						{e, face}
+					]
 				],
-				{e, face}
-			]
-		],
-		{face, ToExpression[facesstr]}
+				{face, ToExpression[facesstr]}
+			], None];
+		faceedges = If[MemberQ[elements, "FaceEdges"],
+			Map[edges[[#[[1]]]]&, ToExpression[facesstr], {2}],
+			None];,
+		vertices = None;
+		edges = None;
+		faces = None;
+		faceedges = None;
 	];
-	faceedges = Map[edges[[#[[1]]]]&, ToExpression[facesstr], {2}];
 	
 	(* vertex labels and coordinates *)
-	vlbls = vertexpos;(*(StringSplit[StringTrim[#, {"{ ", " }"}], ", "]&/@StringSplit[StringTrim[TGGw, {"{ ", " }"}], " }, { "])[[#[[1]], #[[2]]]]&/@vertices;	*)
-	vcoords = Table[
-		LToGraphics[GetSitePosition[tg, vertices[[i,1]], vlbls[[i]], DiskCenter -> center], Model->PoincareDisk][[1]],
-		{i, Length[vertices]}
-	];
+	vlbls = If[MemberQ[elements, "VertexLabels"]||(OptionValue[ComputeVertexCoordinates] && ContainsAny[elements, {"Graph", "UndirectedGraph", "FullGraph"}]), StringTrim[StringSplit[StringTrim[vertexpos, {"{", "}"}], ","], " "], None];
+	(*(StringSplit[StringTrim[#, {"{ ", " }"}], ", "]&/@StringSplit[StringTrim[TGGw, {"{ ", " }"}], " }, { "])[[#[[1]], #[[2]]]]&/@vertices;	*)
+	vcoords = If[OptionValue[ComputeVertexCoordinates] && ContainsAny[elements, {"Graph", "UndirectedGraph", "FullGraph"}],
+		Table[
+			LToGraphics[GetSitePosition[tg, vertices[[i,1]], vlbls[[i]], DiskCenter -> center], Model->PoincareDisk][[1]],
+			{i, Length[vertices]}
+		],
+		None];
 	
 	(* edge translations *)
-	etransls = StringTrim[StringSplit[StringTrim[etransls,{"{", "}"}], ","], " "];
+	etransls = If[MemberQ[elements, "EdgeTranslations"],
+		StringTrim[StringSplit[StringTrim[etransls,{"{", "}"}], ","], " "],
+		None];
 	
 	(* graph *)
-	graph = Graph[vertices, edges, VertexCoordinates -> vcoords];
+	graph = If[ContainsAny[elements, {"Graph", "UndirectedGraph", "FullGraph"}],
+		If[OptionValue[ComputeVertexCoordinates],
+			Graph[vertices, edges, VertexCoordinates -> vcoords],
+			Graph[vertices, edges]
+		],
+		None];
 	
 	HCSupercellModelGraph[<|
 		"TriangleGroup" -> tg,
 		"CellCenter" -> center,
 		"PCGenus" -> Length[\[CapitalGamma]0gens]/2,
 		"Genus" -> Length[\[CapitalGamma]gens]/2,
-		"Graph" -> graph,
-		"UndirectedGraph"->GetUndirectedGraph@graph,
-		"FullGraph" -> GetFullGraph@graph,
+		"PCTranslationGenerators" -> \[CapitalGamma]0gens,
+		"TranslationGenerators" -> \[CapitalGamma]gens,
+		"Graph" -> If[MemberQ[elements, "Graph"], graph, None],
+		"UndirectedGraph"-> If[MemberQ[elements, "UndirectedGraph"], GetUndirectedGraph@graph, None],
+		"FullGraph" -> If[MemberQ[elements, "FullGraph"], GetFullGraph@graph, None],
 		"VertexLabels" -> vlbls,
 		"SchwarzTriangleLabels" -> TD\[CapitalGamma],
 		"EdgeTranslations" -> etransls,
-		"PCTranslationGenerators" -> \[CapitalGamma]0gens,
-		"TranslationGenerators" -> \[CapitalGamma]gens,
 		"TranslationGroupEmbedding" -> \[CapitalGamma]\[CapitalGamma]0,
 		"InternalSupercellTranslations" -> T\[CapitalGamma]0\[CapitalGamma],
 		"Faces" -> faces,

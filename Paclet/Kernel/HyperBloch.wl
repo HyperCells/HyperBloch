@@ -136,12 +136,12 @@ PBCCluster;
 Begin["`Private`"];
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Initialization*)
 
 
 (* print banner *)
-Print["HyperBloch - Version 1.0.1\nMain author: Patrick M. Lenggenhager\n\nThis package loads the following dependencies:\n\t- L2Primitives by Srdjan Vukmirovic\n\t- NCAlgebra by J. William Helton and Mauricio de Oliveira"];
+Print["HyperBloch - Version 1.0.2\nMain author: Patrick M. Lenggenhager\n\nThis package loads the following dependencies:\n\t- L2Primitives by Srdjan Vukmirovic\n\t- NCAlgebra by J. William Helton and Mauricio de Oliveira"];
 
 
 Needs["PatrickMLenggenhager`HyperBloch`L2Primitives`"];
@@ -1188,11 +1188,11 @@ IntroduceDisclination[mgraph_HCModelGraph|mgraph_HCSupercellModelGraph, FrankAng
 ]]
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Graphical Visualization*)
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*Triangle Tessellations*)
 
 
@@ -2121,15 +2121,15 @@ Module[{dimk, verts, Nverts, edges, htest, Hexpr, PCVertex, PCEdge, H, assumptio
 	];
 	
 	H = If[norb === 1,
-		MakeHermitian@SparseArray[
-			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> hoppings[PCEdge@#1]#2)&@@@edges,
-		Nverts] + SparseArray[
+		MakeHermitian@Total[SparseArray[{
+			{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> hoppings[PCEdge@#1]#2
+		}, Nverts]&@@@edges] + SparseArray[
 			({Position[verts, #][[1, 1]], Position[verts, #][[1, 1]]} -> onsite[PCVertex@#])&/@verts,
 		Nverts],
-		MakeHermitian@SparseArray`SparseBlockMatrix[Join[
-			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> hoppings[PCEdge@#1]#2)&@@@edges,
+		MakeHermitian@Total[SparseArray`SparseBlockMatrix[Join[
+			{{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> hoppings[PCEdge@#1]#2},
 			Table[{i, i} -> ZeroMatrix[norb[PCVertex@verts[[i]]]], {i, 1, Length@verts}]
-		]] + SparseArray`SparseBlockMatrix[
+		]]&@@@edges] + SparseArray`SparseBlockMatrix[
 			{Position[verts, #][[1, 1]], Position[verts, #][[1, 1]]} -> onsite[PCVertex@#]&/@verts
 		]
 	];
@@ -2223,20 +2223,20 @@ Module[{dimk, verts, Nverts, edges, htest, Hexpr, PCVertex, PCEdge, H, assumptio
 	];
 	
 	H = If[norb === 1,
-		SparseArray[
-			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> hoppingsCanonical[PCEdge@#1]#2)&@@@edges,
-		Nverts] + ConjugateTranspose@SparseArray[
-			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> Conjugate@hoppingsOpposite[PCEdge@#1]#2)&@@@edges,
-		Nverts] + SparseArray[
+		Total[SparseArray[
+			{{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> hoppingsCanonical[PCEdge@#1]#2},
+		Nverts]&@@@edges] + ConjugateTranspose@Total[SparseArray[
+			{{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1, 1]]} -> Conjugate@hoppingsOpposite[PCEdge@#1]#2},
+		Nverts]&@@@edges] + SparseArray[
 			({Position[verts, #][[1, 1]], Position[verts, #][[1, 1]]} -> onsite[PCVertex@#])&/@verts,
 		Nverts],
-		SparseArray`SparseBlockMatrix[Join[
-			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> hoppingsCanonical[PCEdge@#1]#2)&@@@edges,
+		Total[SparseArray`SparseBlockMatrix[Join[
+			{{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> hoppingsCanonical[PCEdge@#1]#2},
 			Table[{i, i} -> ZeroMatrix[norb[PCVertex@verts[[i]]]], {i, 1, Length@verts}]
-		]] + ConjugateTranspose@SparseArray`SparseBlockMatrix[Join[
-			({Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> Conjugate@hoppingsOpposite[PCEdge@#1]#2)&@@@edges,
+		]]&@@@edges] + ConjugateTranspose@Total[SparseArray`SparseBlockMatrix[Join[
+			{{Position[verts, #1[[2]]][[1, 1]], Position[verts, #1[[1]]][[1,1]]} -> Conjugate@hoppingsOpposite[PCEdge@#1]#2},
 			Table[{i, i} -> ZeroMatrix[norb[PCVertex@verts[[i]]]], {i, 1, Length@verts}]
-		]] + SparseArray`SparseBlockMatrix[
+		]]&@@@edges] + SparseArray`SparseBlockMatrix[
 			{Position[verts, #][[1, 1]], Position[verts, #][[1, 1]]} -> onsite[PCVertex@#]&/@verts
 		]
 	];

@@ -28,7 +28,7 @@ authors:
     orcid: 'https://orcid.org/0000-0001-6904-5264'
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.14502064
+    value: 10.5281/zenodo.16356081
     description: DOI for the latest release of the software
   - type: doi
     value: 10.5281/zenodo.10222865
@@ -44,5 +44,5 @@ abstract: >-
   A Mathematica package for hyperbolic tight-binding models
   and the supercell method
 license: CC-BY-SA-4.0
-version: 1.0.1
-date-released: '2024-12-16'
+version: 1.0.2
+date-released: '2025-07-23'
